@@ -1,0 +1,127 @@
+<?php /* $Header: /cvsroot/igoan/beta/php-include/igoan/Category.class.php,v 1.3 2004/01/05 00:41:44 cam Exp $ */ ?>
+<?php
+
+require_once 'PEAR.php';
+
+class Category extends PEAR {
+	// private
+	var $_id_cat;
+	var $_name_cat;
+	var $_index;
+	var $_parent;
+	var $_valid_cat;
+
+	function Category()
+	{
+		$this->PEAR();
+	}
+
+	// public
+	function set_id_cat($id)
+	{
+		$this->_id_cat = int($id);
+	}
+	function get_id_cat()
+	{
+		return ($this->_id_cat);
+	}
+	function set_name_cat($name)
+	{
+		$this->_name_cat = $name;
+	}
+	function get_name_cat()
+	{
+		return ($this->_name_cat);
+	}
+	function set_index($index)
+	{
+		# warning, index is a text string
+		$this->_index = $index;
+	}
+	function get_index()
+	{
+		return ($this->_index);
+	}
+	function set_parent($parent)
+	{
+		$this->_parent = $parent;
+	}
+	function get_parent()
+	{
+		return ($this->_parent);
+	}
+	function set_valid_cat($valid)
+	{
+		$this->_valid_cat = (bool)$valid;
+	}
+	function get_valid_cat()
+	{
+		return ((bool)$this->_valid_cat);
+	}
+	function delete()
+	{
+		sql_do('DELETE FROM categories WHERE id_cat=\''.int($this->get_id_cat()).'\'');
+	}
+#  function dumpXML()
+#  {
+#    $xml = "<!-- THIS FILE IS AUTO-GENERATED. PLEASE DO NOT EDIT IT BY HAND -->\n\n<".$this->is."s>\n";
+#
+#    $list = $this->listAll();
+#    
+#    while (list(,$tuple) = each ($list)) {
+#      print_r($tuple);
+#      $xml .= "<".$this->is." id='".$tuple[0]."' name='".$tuple[1]."'";
+#      for ($i=0; $i<count($this->options); $i++) {
+#	$xml .= " ".$this->options[$i]."='".$tuple[$i+2]."'";
+#      }
+#      $xml .= "/>\n";
+#    }
+#    
+#    return ($xml . "</".$this->is."s>\n");
+#  }
+}
+
+function category_get_by_id($id)
+{
+	$result = sql_do('SELECT id_cat,name_cat,index,parent,valid_cat FROM categories WHERE id_cat=\''.int($id).'\'');
+
+	if ($result->numRows() != 1) {
+		return (0);
+	}
+	$row = $result->fetchRow();
+	$cat = new Category;
+	$cat->set_id_cat($row[0]);
+	$cat->set_name_cat($row[1]);
+	$cat->set_index($row[2]);
+	$cat->set_parent($row[3]);
+	$cat->set_valid_cat($row[4]);
+
+	return ($cat);
+}
+
+function category_new($index, $nom)
+{
+	# FIXME: increase the actual limit of 10 children by category
+
+	/* recuperation des index existants et correspondants */
+	$result = sql_do('SELECT index FROM categories WHERE index LIKE \''.str($index).'_\' ORDER BY index');
+	for ($i = 0; $i < 10; $i++) {
+		$row = $result->fetchRow();
+		if ($row[0] != ($index . $i)) break;
+	}
+
+	if ($i == 10) return (-1);
+
+	$id_cat = pick_id('categories_id_cat_seq');
+	return (is_a(sql_do('INSERT INTO categories (id_cat,index,name_cat) VALUES (\''.int($id_cat).'\',\''.str($index).int($i).'\',\''.str($nom).'\')'), 'DB-Error') ? 0 : $id_cat);
+}
+
+function category_list($level = '') 
+{
+	return get_array_by_query('SELECT id_cat,name_cat,index,parent FROM categories WHERE index LIKE \''.str($level).'%\' ORDER BY name');
+}
+
+function category_list_all()
+{
+	return get_array_by_query('SELECT id_cat,name_cat,index,parent FROM categories ORDER BY index');
+}
