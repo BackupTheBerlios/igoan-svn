@@ -229,15 +229,15 @@ if (isset($rel)) { ?>
 	</div><?php
 
 } else {
-	append_error_exit('what\'s the fuck !!?');
+	append_error_exit('what\'s the fuck!!?');
 } ?>
 	<h2> Submit </h2>
 	<div class="misc" style="color: #000000; padding-top: 0;">
 		<p>
-		Everybody likes submit buttons ! Blah.
+		Everybody likes submit buttons! Blah.
 		</p>
 		<div class="block">
-			<input type="submit" id="submit" name="submit" value="Submit !" />
+			<input type="submit" id="submit" name="submit" value="Submit!" />
 		</div>
 	</div>
 	</form>

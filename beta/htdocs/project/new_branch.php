@@ -102,11 +102,11 @@ flush_errors();
 	<h2> Submit </h2>
 	<div class="misc" style="color: #000000; padding-top: 0;">
 		<p>
-		Everybody likes submit buttons ! This one add the branch to your project in our database. <br />
+		Everybody likes submit buttons! This one add the branch to your project in our database. <br />
 		You may want to add some "maintainer" to allow users to add releases in this branch.
 		</p>
 		<div class="block">
-			<input type="submit" id="submit" name="submit" value="Submit !" />
+			<input type="submit" id="submit" name="submit" value="Submit!" />
 		</div>
 	</div>
 	</form>

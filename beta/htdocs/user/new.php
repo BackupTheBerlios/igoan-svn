@@ -29,7 +29,7 @@ require_once 'igoan/User.class.php';
 error_reporting(E_ALL);
 unset ($login);
 
-if (isset($_GET['submit']) && ($_GET['submit'] == 'Submit !')) {
+if (isset($_GET['submit']) && ($_GET['submit'] == 'Submit!')) {
 	// verif login valide
 	if (isset($_GET['login'])) {
 		$login = strtolower($_GET['login']);
