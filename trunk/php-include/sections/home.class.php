@@ -29,7 +29,10 @@
 		{
 			global $smarty;
 			
-			$this->_template = $smarty->fetch('home.tpl');		
+			$projets = new ProjectList(); # la on dit que ca sqlise pour chopper les projets, et que ca remplit un tableau dans cet objet
+			$array = $projets->getList(); # la ca retourne un tableau
+			$smarty->assign_by_ref('tab', $array);
+			$this->_template = $smarty->fetch('home.tpl');
 		}
 	}
 ?>
