@@ -1,0 +1,316 @@
+
+-----------------------------------------------------------------------------
+-- Release
+-----------------------------------------------------------------------------
+DROP TABLE Release;
+
+
+CREATE TABLE Release
+(
+                            idRelease serial,
+                            version varchar (255) default '' NOT NULL,
+                            date date () default '',
+                            status integer default,
+                            nbProj integer default,
+                              -- REFERENCES Soft (idSoft)
+    idSoft integer default NOT NULL,
+    PRIMARY KEY (idRelease,idSoft)
+);
+
+
+-----------------------------------------------------------------------------
+-- Language
+-----------------------------------------------------------------------------
+DROP TABLE Language;
+DROP SEQUENCE Language_SEQ;
+
+CREATE SEQUENCE Language_SEQ;
+
+CREATE TABLE Language
+(
+                            idLang serial,
+                            nameLang varchar (255) DEFAULT nextval('Language_SEQ') NOT NULL,
+    PRIMARY KEY (idLang,nameLang)
+);
+
+
+-----------------------------------------------------------------------------
+-- Soft
+-----------------------------------------------------------------------------
+DROP TABLE Soft;
+DROP SEQUENCE Soft_SEQ;
+
+CREATE SEQUENCE Soft_SEQ;
+
+CREATE TABLE Soft
+(
+                            idSoft serial,
+                            name varchar (255) DEFAULT nextval('Soft_SEQ') NOT NULL,
+                            homepage varchar (255) default '' NOT NULL,
+                            description varchar (255) default '' NOT NULL,
+                            download varchar (255) default '',
+                            screenshot varchar () default '',
+    PRIMARY KEY (idSoft,name)
+);
+
+
+-----------------------------------------------------------------------------
+-- Category
+-----------------------------------------------------------------------------
+DROP TABLE Category;
+
+
+CREATE TABLE Category
+(
+                            idCat serial,
+                            nameCat varchar (255) default '' NOT NULL,
+                            index varchar (255) default '',
+                              -- REFERENCES Category (idCat)
+    idCatParent integer default NOT NULL,
+    PRIMARY KEY (idCat,nameCat,idCatParent)
+);
+
+
+-----------------------------------------------------------------------------
+-- Developer
+-----------------------------------------------------------------------------
+DROP TABLE Developer;
+
+
+CREATE TABLE Developer
+(
+                            idDev serial,
+                            nameDev varchar (255) default '' NOT NULL,
+                            mail varchar (255) default '',
+                            url varchar (255) default '',
+    PRIMARY KEY (idDev,nameDev)
+);
+
+
+-----------------------------------------------------------------------------
+-- Platform
+-----------------------------------------------------------------------------
+DROP TABLE Platform;
+DROP SEQUENCE Platform_SEQ;
+
+CREATE SEQUENCE Platform_SEQ;
+
+CREATE TABLE Platform
+(
+                            idPf serial,
+                            name varchar (255) DEFAULT nextval('Platform_SEQ') NOT NULL,
+    PRIMARY KEY (idPf,name)
+);
+
+
+-----------------------------------------------------------------------------
+-- License
+-----------------------------------------------------------------------------
+DROP TABLE License;
+
+
+CREATE TABLE License
+(
+                            idLic serial,
+                            nameLic varchar (255) default '' NOT NULL,
+                            terms varchar (255) default '' NOT NULL,
+                              -- REFERENCES Release (idRelease)
+    idRelease integer default NOT NULL,
+    PRIMARY KEY (idLic,nameLic,idRelease)
+);
+
+
+-----------------------------------------------------------------------------
+-- written
+-----------------------------------------------------------------------------
+DROP TABLE written;
+
+
+CREATE TABLE written
+(
+                              -- REFERENCES Release (idRelease)
+    idRelease integer default NOT NULL,
+                              -- REFERENCES Language (idLang)
+    idLang integer default NOT NULL,
+    PRIMARY KEY (idRelease,idLang)
+);
+
+
+-----------------------------------------------------------------------------
+-- participatedto
+-----------------------------------------------------------------------------
+DROP TABLE participatedto;
+
+
+CREATE TABLE participatedto
+(
+                            joiningDate date (255) default '',
+                            leavingDate date (255) default '',
+                            isCreator boolean () default 0,
+                              -- REFERENCES Developer (idDev)
+    idDev integer default NOT NULL,
+                              -- REFERENCES Soft (idSoft)
+    idSoft integer default NOT NULL,
+    PRIMARY KEY (idDev,idSoft)
+);
+
+
+-----------------------------------------------------------------------------
+-- workson
+-----------------------------------------------------------------------------
+DROP TABLE workson;
+
+
+CREATE TABLE workson
+(
+                              -- REFERENCES Developer (idDev)
+    idDev integer default NOT NULL,
+                              -- REFERENCES Release (idRelease)
+    idRelease integer default NOT NULL,
+    PRIMARY KEY (idDev,idRelease)
+);
+
+
+-----------------------------------------------------------------------------
+-- runson
+-----------------------------------------------------------------------------
+DROP TABLE runson;
+
+
+CREATE TABLE runson
+(
+                              -- REFERENCES Release (idRelease)
+    idRelease integer default NOT NULL,
+                              -- REFERENCES Platform (idPf)
+    idPf integer default NOT NULL,
+    PRIMARY KEY (idRelease,idPf)
+);
+
+
+-----------------------------------------------------------------------------
+-- belongsto
+-----------------------------------------------------------------------------
+DROP TABLE belongsto;
+
+
+CREATE TABLE belongsto
+(
+                              -- REFERENCES Release (idRelease)
+    idRelease integer default NOT NULL,
+                              -- REFERENCES Category (idCat)
+    idCat integer default NOT NULL,
+    PRIMARY KEY (idRelease,idCat)
+);
+
+
+----------------------------------------------------------------------
+-- belongsto                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE Release
+    ADD CONSTRAINT Release_FK_1 FOREIGN KEY (idSoft)
+    REFERENCES Soft (idSoft)
+;
+
+----------------------------------------------------------------------
+-- Release                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- Language                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- Soft                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE Category
+    ADD CONSTRAINT Category_FK_1 FOREIGN KEY (idCatParent)
+    REFERENCES Category (idCat)
+;
+
+----------------------------------------------------------------------
+-- Category                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- Developer                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- Platform                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE License
+    ADD CONSTRAINT License_FK_1 FOREIGN KEY (idRelease)
+    REFERENCES Release (idRelease)
+;
+
+----------------------------------------------------------------------
+-- License                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE written
+    ADD CONSTRAINT written_FK_1 FOREIGN KEY (idRelease)
+    REFERENCES Release (idRelease)
+;
+ALTER TABLE written
+    ADD CONSTRAINT written_FK_2 FOREIGN KEY (idLang)
+    REFERENCES Language (idLang)
+;
+
+----------------------------------------------------------------------
+-- written                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE participatedto
+    ADD CONSTRAINT participatedto_FK_1 FOREIGN KEY (idDev)
+    REFERENCES Developer (idDev)
+;
+ALTER TABLE participatedto
+    ADD CONSTRAINT participatedto_FK_2 FOREIGN KEY (idSoft)
+    REFERENCES Soft (idSoft)
+;
+
+----------------------------------------------------------------------
+-- participatedto                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE workson
+    ADD CONSTRAINT workson_FK_1 FOREIGN KEY (idDev)
+    REFERENCES Developer (idDev)
+;
+ALTER TABLE workson
+    ADD CONSTRAINT workson_FK_2 FOREIGN KEY (idRelease)
+    REFERENCES Release (idRelease)
+;
+
+----------------------------------------------------------------------
+-- workson                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE runson
+    ADD CONSTRAINT runson_FK_1 FOREIGN KEY (idRelease)
+    REFERENCES Release (idRelease)
+;
+ALTER TABLE runson
+    ADD CONSTRAINT runson_FK_2 FOREIGN KEY (idPf)
+    REFERENCES Platform (idPf)
+;
+
+----------------------------------------------------------------------
+-- runson                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE belongsto
+    ADD CONSTRAINT belongsto_FK_1 FOREIGN KEY (idRelease)
+    REFERENCES Release (idRelease)
+;
+ALTER TABLE belongsto
+    ADD CONSTRAINT belongsto_FK_2 FOREIGN KEY (idCat)
+    REFERENCES Category (idCat)
+;

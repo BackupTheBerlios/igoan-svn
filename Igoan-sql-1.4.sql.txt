@@ -1,0 +1,381 @@
+
+-----------------------------------------------------------------------------
+-- release
+-----------------------------------------------------------------------------
+DROP TABLE release;
+
+
+CREATE TABLE release
+(
+                            id_rel serial,
+                            version varchar (255) default '' NOT NULL,
+                            date_rel date () default '' NOT NULL,
+                            status integer default,
+                            nb_proj integer default NOT NULL,
+                            changes varchar (255) default '',
+                            download varchar (255) default '',
+                            valid_rel int2 default NOT NULL,
+                              -- REFERENCES branch (id_branch)
+    id_branch integer NOT NULL,
+                              -- REFERENCES license (id_lic)
+    id_lic integer NOT NULL,
+    PRIMARY KEY (id_rel)
+);
+
+
+-----------------------------------------------------------------------------
+-- language
+-----------------------------------------------------------------------------
+DROP TABLE language;
+DROP SEQUENCE language_SEQ;
+
+CREATE SEQUENCE language_SEQ;
+
+CREATE TABLE language
+(
+                            id_lang serial,
+                            name_lang varchar (255) default '' NOT NULL,
+                            valid_lang int2 default NOT NULL,
+    PRIMARY KEY (id_lang)
+);
+
+
+-----------------------------------------------------------------------------
+-- project
+-----------------------------------------------------------------------------
+DROP TABLE project;
+DROP SEQUENCE project_SEQ;
+
+CREATE SEQUENCE project_SEQ;
+
+CREATE TABLE project
+(
+                            id_prj serial,
+                            name_prj varchar (255) default 'Default' NOT NULL,
+                            homepage varchar (255) default '' NOT NULL,
+                            description varchar (255) default '' NOT NULL,
+                            screenshot varchar () default '',
+                            shortname varchar (255) default '' NOT NULL,
+                            date_prj date () default '' NOT NULL,
+                            valid_prj int2 default NOT NULL,
+    PRIMARY KEY (id_prj)
+);
+
+
+-----------------------------------------------------------------------------
+-- category
+-----------------------------------------------------------------------------
+DROP TABLE category;
+DROP SEQUENCE category_SEQ;
+
+CREATE SEQUENCE category_SEQ;
+
+CREATE TABLE category
+(
+                            id_cat serial,
+                            name_cat varchar (255) default '' NOT NULL,
+                            index varchar (255) default '',
+                            parent integer default,
+                            valid_cat int2 default NOT NULL,
+    PRIMARY KEY (id_cat)
+);
+
+
+-----------------------------------------------------------------------------
+-- user
+-----------------------------------------------------------------------------
+DROP TABLE user;
+
+
+CREATE TABLE user
+(
+                            id_user serial,
+                            name_user varchar (255) default '' NOT NULL,
+                            mail varchar (255) default '',
+                            url varchar (255) default '',
+                            date_user date () default '0' NOT NULL,
+                            valid_user int2 default NOT NULL,
+                            login varchar (255),
+                            passwd varchar (255),
+    PRIMARY KEY (id_user)
+);
+
+
+-----------------------------------------------------------------------------
+-- platform
+-----------------------------------------------------------------------------
+DROP TABLE platform;
+DROP SEQUENCE platform_SEQ;
+
+CREATE SEQUENCE platform_SEQ;
+
+CREATE TABLE platform
+(
+                            id_pf serial,
+                            name_pf varchar (255) default '' NOT NULL,
+                            valid_pf varchar (255) default '' NOT NULL,
+    PRIMARY KEY (id_pf)
+);
+
+
+-----------------------------------------------------------------------------
+-- license
+-----------------------------------------------------------------------------
+DROP TABLE license;
+
+
+CREATE TABLE license
+(
+                            id_lic serial,
+                            name_lic varchar (255) default '' NOT NULL,
+                            terms varchar (255) default '' NOT NULL,
+                            valid_lic int2 default NOT NULL,
+    PRIMARY KEY (id_lic)
+);
+
+
+-----------------------------------------------------------------------------
+-- branch
+-----------------------------------------------------------------------------
+DROP TABLE branch;
+
+
+CREATE TABLE branch
+(
+                            id_branch integer default NOT NULL,
+                            name_branch varchar (255) default '' NOT NULL,
+                              -- REFERENCES project (id_prj)
+    id_prj integer default NOT NULL,
+    PRIMARY KEY (id_branch)
+);
+
+
+-----------------------------------------------------------------------------
+-- written
+-----------------------------------------------------------------------------
+DROP TABLE written;
+
+
+CREATE TABLE written
+(
+                              -- REFERENCES release (id_rel)
+    id_rel integer default NOT NULL,
+                              -- REFERENCES language (id_lang)
+    id_lang integer default NOT NULL,
+    PRIMARY KEY (id_rel,id_lang)
+);
+
+
+-----------------------------------------------------------------------------
+-- runson
+-----------------------------------------------------------------------------
+DROP TABLE runson;
+
+
+CREATE TABLE runson
+(
+                              -- REFERENCES release (id_rel)
+    id_rel integer default NOT NULL,
+                              -- REFERENCES platform (id_pf)
+    id_pf integer default NOT NULL,
+    PRIMARY KEY (id_rel,id_pf)
+);
+
+
+-----------------------------------------------------------------------------
+-- belongsto
+-----------------------------------------------------------------------------
+DROP TABLE belongsto;
+
+
+CREATE TABLE belongsto
+(
+                              -- REFERENCES release (id_rel)
+    id_rel integer default NOT NULL,
+                              -- REFERENCES category (id_cat)
+    id_cat integer default NOT NULL,
+    PRIMARY KEY (id_rel,id_cat)
+);
+
+
+-----------------------------------------------------------------------------
+-- admin
+-----------------------------------------------------------------------------
+DROP TABLE admin;
+
+
+CREATE TABLE admin
+(
+                              -- REFERENCES project (id_prj)
+    id_prj integer default NOT NULL,
+                              -- REFERENCES user (id_user)
+    id_user integer default NOT NULL,
+    PRIMARY KEY (id_prj,id_user)
+);
+
+
+-----------------------------------------------------------------------------
+-- author
+-----------------------------------------------------------------------------
+DROP TABLE author;
+
+
+CREATE TABLE author
+(
+                              -- REFERENCES user (id_user)
+    id_user integer default NOT NULL,
+                              -- REFERENCES release (id_rel)
+    id_rel integer default NOT NULL,
+    PRIMARY KEY (id_user,id_rel)
+);
+
+
+-----------------------------------------------------------------------------
+-- maintainer
+-----------------------------------------------------------------------------
+DROP TABLE maintainer;
+
+
+CREATE TABLE maintainer
+(
+                              -- REFERENCES branch (id_branch)
+    id_branch integer default NOT NULL,
+                              -- REFERENCES user (id_user)
+    id_user integer default NOT NULL,
+    PRIMARY KEY (id_branch,id_user)
+);
+
+
+----------------------------------------------------------------------
+-- maintainer                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE release
+    ADD CONSTRAINT release_FK_1 FOREIGN KEY (id_branch)
+    REFERENCES branch (id_branch)
+;
+ALTER TABLE release
+    ADD CONSTRAINT release_FK_2 FOREIGN KEY (id_lic)
+    REFERENCES license (id_lic)
+;
+
+----------------------------------------------------------------------
+-- release                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- language                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- project                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- category                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE category
+	ADD CONSTRAINT category_FK_1 FOREIGN KEY (parent)
+		REFERENCES category (id_cat)
+;
+
+----------------------------------------------------------------------
+-- user                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- platform                                                      
+----------------------------------------------------------------------
+
+
+----------------------------------------------------------------------
+-- license                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE branch
+    ADD CONSTRAINT branch_FK_1 FOREIGN KEY (id_prj)
+    REFERENCES project (id_prj)
+;
+
+----------------------------------------------------------------------
+-- branch                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE written
+    ADD CONSTRAINT written_FK_1 FOREIGN KEY (id_rel)
+    REFERENCES release (id_rel)
+;
+ALTER TABLE written
+    ADD CONSTRAINT written_FK_2 FOREIGN KEY (id_lang)
+    REFERENCES language (id_lang)
+;
+
+----------------------------------------------------------------------
+-- written                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE runson
+    ADD CONSTRAINT runson_FK_1 FOREIGN KEY (id_rel)
+    REFERENCES release (id_rel)
+;
+ALTER TABLE runson
+    ADD CONSTRAINT runson_FK_2 FOREIGN KEY (id_pf)
+    REFERENCES platform (id_pf)
+;
+
+----------------------------------------------------------------------
+-- runson                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE belongsto
+    ADD CONSTRAINT belongsto_FK_1 FOREIGN KEY (id_rel)
+    REFERENCES release (id_rel)
+;
+ALTER TABLE belongsto
+    ADD CONSTRAINT belongsto_FK_2 FOREIGN KEY (id_cat)
+    REFERENCES category (id_cat)
+;
+
+----------------------------------------------------------------------
+-- belongsto                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE admin
+    ADD CONSTRAINT admin_FK_1 FOREIGN KEY (id_prj)
+    REFERENCES project (id_prj)
+;
+ALTER TABLE admin
+    ADD CONSTRAINT admin_FK_2 FOREIGN KEY (id_user)
+    REFERENCES user (id_user)
+;
+
+----------------------------------------------------------------------
+-- admin                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE author
+    ADD CONSTRAINT author_FK_1 FOREIGN KEY (id_user)
+    REFERENCES user (id_user)
+;
+ALTER TABLE author
+    ADD CONSTRAINT author_FK_2 FOREIGN KEY (id_rel)
+    REFERENCES release (id_rel)
+;
+
+----------------------------------------------------------------------
+-- author                                                      
+----------------------------------------------------------------------
+
+ALTER TABLE maintainer
+    ADD CONSTRAINT maintainer_FK_1 FOREIGN KEY (id_branch)
+    REFERENCES branch (id_branch)
+;
+ALTER TABLE maintainer
+    ADD CONSTRAINT maintainer_FK_2 FOREIGN KEY (id_user)
+    REFERENCES user (id_user)
+;

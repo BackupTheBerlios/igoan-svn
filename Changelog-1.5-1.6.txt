@@ -1,0 +1,21 @@
+2003-11-26:
+
+New! table igoan_admins:
+- id_prj
+
+table users:
+- url -> url_user
+- New! desc_user
+- New! nb_logins
+- New! photo
+
+table projects:
+- homepage -> url_prj
+- description -> desc_prj
+
+table admins:
+- New! is_owner
+
+tous les champs DATE -> TIMESTAMP
+
+contrainte [0..7] sur release.status

@@ -1,0 +1,20 @@
+LICENSE (@id_lic, name_lic, terms, valid_lic)
+
+PROJECT (@id_prj, name_prj, homepage, description, screenshot, shortname, date_prj, valid_prj)
+BRANCH (@id_branch, branch, #id_prj)
+RELEASE (@id_rel, version, date_rel, status, nb_prj, changes, download, valid_rel, #id_branch, #id_lic)
+
+USER (@id_user, name_user, mail, url, date_user, valid_user, login, passwd)
+
+ADMIN (@#id_user, @#id_prj)
+MAINTAINER (@#id_user, @#id_branch)
+AUTHOR (@#id_user, @#id_rel)
+
+LANGUAGE (@id_lang, name_lang, valid_lang)
+WRITTEN (@#id_rel, @#id_lang)
+
+PLATFORM (@id_pf, name_pf, valid_pf)
+RUNSON (@#id_rel, @#id_pf)
+
+CATEGORY (@id_cat, name_cat, index, #parent, valid_cat)
+BELONGSTO (@#id_rel, @#id_cat)

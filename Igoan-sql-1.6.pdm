@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdm SYSTEM "DTD/pdm.dtd">
+<database code="Modelisation_SQL" name="Modelisation SQL" defaultIdMethod="native" defaultJavaType="primitive" package="com.myapp.om" baseClass="com.myapp.om.BaseClass" basePeer="com.myapp.om.BassePeer" defaultJavaNamingMethod="underscore" heavyIndexing="false">
+    <author authorEmail="cam@cameuh.net">cam</author>
+    <company>Igoan</company>
+    <projectURL>http://www.igoan.org/</projectURL>
+    <description />
+    <notes />
+    <databaseProperties>
+        <dbType>0</dbType>
+        <databaseHost>127.0.0.1</databaseHost>
+        <createDatabaseUrl>jdbc:postgresql://127.0.0.1/template1</createDatabaseUrl>
+        <buildDatabaseUrl>jdbc:postgresql://127.0.0.1/MODEL_2</buildDatabaseUrl>
+        <schema>public</schema>
+        <databaseUser>igoan_dev</databaseUser>
+        <databasePassword>prout</databasePassword>
+    </databaseProperties>
+    <table name="releases" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="represente une version d'un soft" x="5751" y="2912" width="78" height="165">
+        <code>releases</code>
+        <notes />
+        <column name="id_rel" javaName="" code="id_rel" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_rel" javaName="" code="name_rel" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="date_rel" javaName="" code="date_rel" primaryKey="false" required="true" type="DATE" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="status" javaName="" code="status" primaryKey="false" required="false" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="nb_projs" javaName="" code="nb_projs" primaryKey="false" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="changes" javaName="" code="changes" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="download" javaName="" code="download" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="valid_rel" javaName="" code="valid_rel" primaryKey="false" required="true" type="BOOLEANINT" javaType="primitive" size="1" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_branch" javaName="" code="id_branch" primaryKey="false" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_lic" javaName="" code="id_lic" primaryKey="false" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="branches">
+            <reference local="id_branch" foreign="id_branch" />
+        </foreign-key>
+        <foreign-key foreignTable="licenses">
+            <reference local="id_lic" foreign="id_lic" />
+        </foreign-key>
+    </table>
+    <table name="languages" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="langage de programmation d'un soft" x="5483" y="3215" width="85" height="74">
+        <code>languages</code>
+        <notes />
+        <column name="id_lang" javaName="" code="id_lang" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_lang" javaName="" code="name_lang" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="valid_lang" javaName="" code="valid_lang" primaryKey="false" required="true" type="BOOLEANINT" javaType="primitive" size="1" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </table>
+    <table name="projects" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="represente un projet d'une maniere generale" x="5747" y="2539" width="113" height="152">
+        <code>projects</code>
+        <notes />
+        <column name="id_prj" javaName="" code="id_prj" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_prj" javaName="" code="name_prj" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="Default" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="url_prj" javaName="" code="url_prj" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="desc_prj" javaName="" code="desc_prj" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="screenshot" javaName="" code="screenshot" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="shortname" javaName="" code="shortname" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="date_prj" javaName="" code="date_prj" primaryKey="false" required="true" type="DATE" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="valid_prj" javaName="" code="valid_prj" primaryKey="false" required="true" type="BOOLEANINT" javaType="primitive" size="1" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="default_branch" javaName="" code="default_branch" primaryKey="false" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </table>
+    <table name="categories" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="idCat" javaNamingMethod="null" heavyIndexing="false" description="represente une categorie pour classifier les softs" x="6018" y="3058" width="85" height="100">
+        <code>categories</code>
+        <notes />
+        <column name="id_cat" javaName="" code="id_cat" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_cat" javaName="" code="name_cat" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="index" javaName="" code="index" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="parent" javaName="" code="parent" primaryKey="false" required="false" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="valid_cat" javaName="" code="valid_cat" primaryKey="false" required="true" type="BOOLEANINT" javaType="primitive" size="1" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </table>
+    <table name="users" javaName="" idMethod="null" skipSql="false" abstract="false" baseClass="ENTITY11" basePeer="org.apache.torque.util.BasePeer" alias="idDev" javaNamingMethod="null" heavyIndexing="false" description="represente   * un utilisateur d'igoan,  * un developpeur,  * ou les deux " x="5437" y="2561" width="85" height="178">
+        <code>users</code>
+        <notes />
+        <column name="id_user" javaName="" code="id_user" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_user" javaName="" code="name_user" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="mail" javaName="" code="mail" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="url_user" javaName="" code="url_user" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="date_user" javaName="" code="date_user" primaryKey="false" required="true" type="TIMESTAMP" javaType="primitive" size="4" default="0" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="valid_user" javaName="" code="valid_user" primaryKey="false" required="true" type="BOOLEANINT" javaType="primitive" size="1" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="login" javaName="" code="login" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="passwd" javaName="" code="passwd" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="desc_user" javaName="" code="desc_user" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="nb_logins" javaName="" code="nb_logins" primaryKey="false" required="false" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="photo" javaName="" code="photo" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </table>
+    <table name="platforms" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="idPlatform" javaNamingMethod="null" heavyIndexing="false" description="represente une plate-forme sur laquelle un soft marche" x="5878" y="3238" width="78" height="74">
+        <code>platforms</code>
+        <notes />
+        <column name="id_pf" javaName="" code="id_pf" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_pf" javaName="" code="name_pf" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="valid_pf" javaName="" code="valid_pf" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </table>
+    <table name="licenses" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="idLicense" javaNamingMethod="null" heavyIndexing="false" description="represente une licence" x="5466" y="3012" width="78" height="87">
+        <code>licenses</code>
+        <notes />
+        <column name="id_lic" javaName="" code="id_lic" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_lic" javaName="" code="name_lic" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="terms" javaName="" code="terms" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="valid_lic" javaName="" code="valid_lic" primaryKey="false" required="true" type="BOOLEANINT" javaType="primitive" size="1" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </table>
+    <table name="branches" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="represente une branche d'un projet (ex: linux-2.4 est une branche stable du projet linux)" x="5745" y="2761" width="92" height="87">
+        <code>branches</code>
+        <notes />
+        <column name="id_branch" javaName="" code="id_branch" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="name_branch" javaName="" code="name_branch" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_prj" javaName="" code="id_prj" primaryKey="false" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="date_branch" javaName="" code="date_branch" primaryKey="false" required="true" type="DATE" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="projects">
+            <reference local="id_prj" foreign="id_prj" />
+        </foreign-key>
+    </table>
+    <table name="written" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="association d'une release a un langage de prog" x="5618" y="3114" width="64" height="61">
+        <code>written</code>
+        <notes />
+        <column name="id_rel" javaName="" code="id_rel" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_lang" javaName="" code="id_lang" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="releases">
+            <reference local="id_rel" foreign="id_rel" />
+        </foreign-key>
+        <foreign-key foreignTable="languages">
+            <reference local="id_lang" foreign="id_lang" />
+        </foreign-key>
+    </table>
+    <table name="runson" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5800" y="3126" width="57" height="61">
+        <code>runson</code>
+        <notes />
+        <column name="id_rel" javaName="" code="id_rel" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_pf" javaName="" code="id_pf" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="releases">
+            <reference local="id_rel" foreign="id_rel" />
+        </foreign-key>
+        <foreign-key foreignTable="platforms">
+            <reference local="id_pf" foreign="id_pf" />
+        </foreign-key>
+    </table>
+    <table name="belongsto" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5882" y="2992" width="78" height="61">
+        <code>belongsto</code>
+        <notes />
+        <column name="id_rel" javaName="" code="id_rel" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_cat" javaName="" code="id_cat" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="releases">
+            <reference local="id_rel" foreign="id_rel" />
+        </foreign-key>
+        <foreign-key foreignTable="categories">
+            <reference local="id_cat" foreign="id_cat" />
+        </foreign-key>
+    </table>
+    <table name="admins" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="etre admin d'un projet sur igoan" x="5611" y="2594" width="71" height="74">
+        <code>admins</code>
+        <notes />
+        <column name="id_prj" javaName="" code="id_prj" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_user" javaName="" code="id_user" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="is_owner" javaName="" code="is_owner" primaryKey="false" required="false" type="BOOLEANINT" javaType="primitive" size="1" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="projects">
+            <reference local="id_prj" foreign="id_prj" />
+        </foreign-key>
+        <foreign-key foreignTable="users">
+            <reference local="id_user" foreign="id_user" />
+        </foreign-key>
+    </table>
+    <table name="authors" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="etre l'auteur d'une release" x="5598" y="2821" width="64" height="61">
+        <code>authors</code>
+        <notes />
+        <column name="id_user" javaName="" code="id_user" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_rel" javaName="" code="id_rel" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="users">
+            <reference local="id_user" foreign="id_user" />
+        </foreign-key>
+        <foreign-key foreignTable="releases">
+            <reference local="id_rel" foreign="id_rel" />
+        </foreign-key>
+    </table>
+    <table name="maintainers" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5603" y="2698" width="92" height="61">
+        <code>maintainers</code>
+        <notes />
+        <column name="id_branch" javaName="" code="id_branch" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="id_user" javaName="" code="id_user" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="branches">
+            <reference local="id_branch" foreign="id_branch" />
+        </foreign-key>
+        <foreign-key foreignTable="users">
+            <reference local="id_user" foreign="id_user" />
+        </foreign-key>
+    </table>
+    <table name="igoan_admins" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5433" y="2832" width="99" height="48">
+        <code>igoan_admins</code>
+        <notes />
+        <column name="id_user" javaName="" code="id_user" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <foreign-key foreignTable="users">
+            <reference local="id_user" foreign="id_user" />
+        </foreign-key>
+    </table>
+</database>
+

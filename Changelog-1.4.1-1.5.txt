@@ -1,0 +1,6 @@
+2003-11-18:
+- Renommage de la table "person" en "user". 
+- Renommage des tables "user", "project", "admin", "maintainer", "branch", "author", "release", "category", "license", "language" et "platform" en leur pluriel. 
+- Ajout d'un champ "default_branch" dans projects. Not null. Clé étrangère vers "branches.id_branch". Notez que la branche par défaut n'apparait plus dans la relation "branch_asso" (sinon redondance). Notez aussi que cette branche est donc ineffaçable. 
+- Ajout d'un champ "date_branch" dans la table branches. 
+- Renommage de "releases.version" en "releases.name_rel" pour harmoniser.

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cdm SYSTEM "DTD/cdm.dtd">
+<cdm code="MODEL_2" name="Model 2" defaultIdMethod="native" defaultJavaType="primitive" package="com.myapp.om" baseClass="com.myapp.om.BaseClass" basePeer="com.myapp.om.BassePeer" defaultJavaNamingMethod="underscore" heavyIndexing="false">
+    <author authorEmail="" />
+    <company />
+    <projectURL />
+    <description />
+    <notes />
+    <databaseProperties>
+        <dbType>0</dbType>
+        <databaseHost>127.0.0.1</databaseHost>
+        <createDatabaseUrl>jdbc:postgresql://127.0.0.1/template1</createDatabaseUrl>
+        <buildDatabaseUrl>jdbc:postgresql://127.0.0.1/MODEL_2</buildDatabaseUrl>
+        <schema>public</schema>
+        <databaseUser>adminuser</databaseUser>
+        <databasePassword>adminpassword</databasePassword>
+    </databaseProperties>
+    <entity name="Release" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="represente une version d'un soft" x="5385" y="2846" width="64" height="100">
+        <code>Release</code>
+        <notes />
+        <column name="idRel" javaName="" code="idRel" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="version" javaName="" code="version" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="date" javaName="" code="date" primaryKey="false" required="false" type="DATE" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="status" javaName="" code="status" primaryKey="false" required="false" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="nbProj" javaName="" code="nbProj" primaryKey="false" required="false" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </entity>
+    <entity name="Language" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="langage de programmation d'un soft" x="5193" y="2470" width="71" height="61">
+        <code>Language</code>
+        <notes />
+        <column name="idLang" javaName="" code="idLang" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="lang" javaName="" code="lang" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </entity>
+    <entity name="project" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="represente un projet d'une maniere generale" x="5015" y="2838" width="92" height="113">
+        <code>project</code>
+        <notes />
+        <column name="idPrj" javaName="" code="idPrj" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="fullname" javaName="" code="fullname" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="homepage" javaName="" code="homepage" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="description" javaName="" code="description" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="download" javaName="" code="download" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="screenshot" javaName="" code="screenshot" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </entity>
+    <entity name="Category" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="idCat" javaNamingMethod="null" heavyIndexing="false" description="represente une categorie pour classifier les softs" x="5616" y="2468" width="71" height="74">
+        <code>Category</code>
+        <notes />
+        <column name="idCat" javaName="" code="idCat" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="category" javaName="" code="category" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="index" javaName="" code="index" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </entity>
+    <entity name="User" javaName="" idMethod="null" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="idDev" javaNamingMethod="null" heavyIndexing="false" description="represente 
+ * un utilisateur d'igoan,
+ * un developpeur,
+ * ou les deux
+" x="5026" y="2466" width="78" height="87">
+        <code>User</code>
+        <notes />
+        <column name="idUser" javaName="" code="idUser" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="user" javaName="" code="user" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="mail" javaName="" code="mail" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="url" javaName="" code="url" primaryKey="false" required="false" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </entity>
+    <entity name="Platform" javaName="" idMethod="autoincrement" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="idPlatform" javaNamingMethod="null" heavyIndexing="false" description="represente une plate-forme sur laquelle un soft marche" x="5338" y="2470" width="71" height="61">
+        <code>Platform</code>
+        <notes />
+        <column name="idPf" javaName="" code="idPf" primaryKey="true" required="true" type="INTEGER" javaType="primitive" size="" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="platform" javaName="" code="platform" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </entity>
+    <entity name="License" javaName="" idMethod="null" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="idLicense" javaNamingMethod="null" heavyIndexing="false" description="represente une licence" x="5484" y="2466" width="64" height="74">
+        <code>License</code>
+        <notes />
+        <column name="idLic" javaName="" code="idLic" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="true" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="license" javaName="" code="license" primaryKey="true" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="terms" javaName="" code="terms" primaryKey="false" required="true" type="VARCHAR" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+    </entity>
+    <association name="written" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="association d'une release a un langage de prog" x="5221" y="2605" width="64" height="35">
+        <code>written</code>
+        <notes />
+        <associationLink linkedEntity="Release" cardinality="2" />
+        <associationLink linkedEntity="Language" cardinality="2" />
+    </association>
+    <association name="released" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="associe un soft a ses releases (versions)" x="5209" y="2879" width="71" height="35">
+        <code>released</code>
+        <notes />
+        <associationLink linkedEntity="project" cardinality="1" />
+        <associationLink linkedEntity="Release" cardinality="2" />
+    </association>
+    <association name="participatedto" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="participation d'un developpeur a une release" x="4999" y="2675" width="113" height="74">
+        <code>participatedto</code>
+        <notes />
+        <column name="joiningDate" javaName="" code="joiningDate" primaryKey="false" required="false" type="DATE" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="leavingDate" javaName="" code="leavingDate" primaryKey="false" required="false" type="DATE" javaType="primitive" size="255" default="" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <column name="isCreator" javaName="" code="isCreator" primaryKey="false" required="false" type="BIT" javaType="primitive" size="" default="0" autoIncrement="false" inheritance="false" inputValidator="" javaNamingMethod="null" description="" />
+        <associationLink linkedEntity="User" cardinality="2" />
+        <associationLink linkedEntity="project" cardinality="2" />
+    </association>
+    <association name="workson" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="association d'un developpeur a un projet (soft)" x="5205" y="2718" width="64" height="35">
+        <code>workson</code>
+        <notes />
+        <associationLink linkedEntity="User" cardinality="2" />
+        <associationLink linkedEntity="Release" cardinality="2" />
+    </association>
+    <association name="islicensed" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5469" y="2608" width="85" height="35">
+        <code>islicensed</code>
+        <notes />
+        <associationLink linkedEntity="Release" cardinality="1" />
+        <associationLink linkedEntity="License" cardinality="2" />
+    </association>
+    <association name="runson" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5366" y="2597" width="57" height="35">
+        <code>runson</code>
+        <notes />
+        <associationLink linkedEntity="Release" cardinality="2" />
+        <associationLink linkedEntity="Platform" cardinality="2" />
+    </association>
+    <association name="belongsto" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5581" y="2710" width="78" height="35">
+        <code>belongsto</code>
+        <notes />
+        <associationLink linkedEntity="Release" cardinality="2" />
+        <associationLink linkedEntity="Category" cardinality="2" />
+    </association>
+    <association name="subCat" javaName="" idMethod="none" skipSql="false" abstract="false" baseClass="" basePeer="org.apache.torque.util.BasePeer" alias="" javaNamingMethod="null" heavyIndexing="false" description="" x="5738" y="2585" width="57" height="35">
+        <code>subCat</code>
+        <notes />
+        <associationLink linkedEntity="Category" cardinality="2" />
+        <associationLink linkedEntity="Category" cardinality="0" />
+    </association>
+</cdm>
+

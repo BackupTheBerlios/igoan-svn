@@ -1,0 +1,22 @@
+USERS (@id_user, name_user, mail, url_user, date_user, valid_user, login, passwd, desc_user, nb_logins, photo)
+IGOAN_ADMINS (#id_user)
+
+LICENSES (@id_lic, name_lic, terms, valid_lic)
+
+PROJECTS (@id_prj, name_prj, url_prj, desc_prj, screenshot, shortname, date_prj, valid_prj, #default_branch)
+ADMINS (@#id_user, @#id_prj, is_owner)
+
+BRANCHES (@id_branch, name_branch, date_branch, #id_prj)
+MAINTAINERS (@#id_user, @#id_branch)
+
+RELEASES (@id_rel, name_rel, date_rel, status, nb_prj, changes, download, valid_rel, #id_branch, #id_lic)
+AUTHORS (@#id_user, @#id_rel)
+
+LANGUAGES (@id_lang, name_lang, valid_lang)
+WRITTEN (@#id_rel, @#id_lang)
+
+PLATFORMS (@id_pf, name_pf, valid_pf)
+RUNSON (@#id_rel, @#id_pf)
+
+CATEGORIES (@id_cat, name_cat, index, #parent, valid_cat)
+BELONGSTO (@#id_rel, @#id_cat)

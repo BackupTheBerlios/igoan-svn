@@ -1,0 +1,294 @@
+-- CODE PostgreSQL pour IGOAN
+
+-- Version 1.6
+-- Date 2003-11-26
+-- Author cam
+-- Ajout de champs, table, contrainte. Renommages.
+
+-- Version 1.5.1
+-- Date 2003-11-19
+-- Author cam
+-- Correction du code, la prochaine fois je vérifierai avant de submiter :)
+
+-- Version 1.5
+-- Date 2003-11-18 (speciale mat)
+-- Author cam
+-- Quelques renommages et ajouts de champs
+
+-- Version 1.4.1
+-- Date 2003-11-02
+-- Author cam
+-- Code entièrement corrigé et fonctionnel
+
+-- Version 1.4
+-- Date 2003-10-18
+-- Author cam
+-- Code SQL généré par NextObjects
+
+-----------------------------------------------------------------------------
+-- users
+-----------------------------------------------------------------------------
+
+DROP TABLE users CASCADE;
+-- DROP SEQUENCE "users_id_user_seq";
+
+CREATE TABLE users
+(
+	id_user SERIAL,
+	name_user VARCHAR (255) NOT NULL,
+	mail VARCHAR (255) NOT NULL,
+	url_user VARCHAR (255) DEFAULT '',
+	date_user TIMESTAMP NOT NULL,
+	valid_user INT2 DEFAULT 0 NOT NULL,
+	login VARCHAR (255),
+	passwd VARCHAR (255),
+	desc_user VARCHAR (255),
+	nb_logins INTEGER DEFAULT 0 NOT NULL CHECK (nb_logins >= 0),
+	photo VARCHAR (255),
+	PRIMARY KEY (id_user),
+	UNIQUE (mail),
+	UNIQUE (login)
+);
+
+-----------------------------------------------------------------------------
+-- categories
+-----------------------------------------------------------------------------
+
+DROP TABLE categories CASCADE;
+-- DROP SEQUENCE "categories_id_cat_seq";
+
+CREATE TABLE categories (
+	id_cat SERIAL,
+	name_cat VARCHAR (255) NOT NULL,
+	index VARCHAR (255) DEFAULT '',
+	parent INTEGER,
+	valid_cat INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_cat),
+	UNIQUE (name_cat),
+	FOREIGN KEY (parent) REFERENCES categories (id_cat) ON DELETE CASCADE
+);
+
+-----------------------------------------------------------------------------
+-- platforms
+-----------------------------------------------------------------------------
+
+DROP TABLE platforms CASCADE;
+-- DROP SEQUENCE platforms_id_pf_seq;
+
+CREATE TABLE platforms
+(
+	id_pf SERIAL,
+	name_pf VARCHAR (255) NOT NULL,
+	valid_pf INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_pf),
+	UNIQUE (name_pf)
+);
+
+-----------------------------------------------------------------------------
+-- licenses
+-----------------------------------------------------------------------------
+
+DROP TABLE licenses CASCADE;
+-- DROP SEQUENCE licenses_id_lic_seq;
+
+CREATE TABLE licenses
+(
+	id_lic SERIAL,
+	name_lic VARCHAR (255) NOT NULL,
+	terms VARCHAR (2048) NOT NULL,
+	valid_lic INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_lic),
+	UNIQUE (name_lic)
+);
+
+-----------------------------------------------------------------------------
+-- languages
+-----------------------------------------------------------------------------
+
+DROP TABLE languages CASCADE;
+-- DROP SEQUENCE languages_id_lang_seq;
+
+CREATE TABLE languages
+(
+	id_lang SERIAL,
+	name_lang VARCHAR (255) NOT NULL,
+	valid_lang INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_lang),
+	UNIQUE (name_lang)
+);
+
+-----------------------------------------------------------------------------
+-- projects
+-----------------------------------------------------------------------------
+
+DROP TABLE projects CASCADE;
+-- DROP SEQUENCE projects_id_prj_seq;
+
+CREATE TABLE projects
+(
+	id_prj SERIAL,
+	name_prj VARCHAR (64) NOT NULL,
+	url_prj VARCHAR (255) DEFAULT '',
+	desc_prj VARCHAR (255) NOT NULL,
+	screenshot VARCHAR (64) DEFAULT '',
+	shortname VARCHAR (20) NOT NULL,
+	default_branch INTEGER,
+	date_prj TIMESTAMP NOT NULL,
+	valid_prj INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_prj),
+	UNIQUE (shortname)
+);
+
+-----------------------------------------------------------------------------
+-- admins
+-----------------------------------------------------------------------------
+
+DROP TABLE admins;
+
+CREATE TABLE admins
+(
+	id_prj INTEGER,
+	id_user INTEGER,
+	is_owner INT2 DEFAULT 0,
+	PRIMARY KEY (id_prj, id_user),
+	FOREIGN KEY (id_prj) REFERENCES projects ON DELETE CASCADE,
+	FOREIGN KEY (id_user) REFERENCES users ON DELETE CASCADE
+);
+
+-----------------------------------------------------------------------------
+-- branches
+-----------------------------------------------------------------------------
+
+DROP TABLE branches CASCADE;
+-- DROP SEQUENCE branches_id_branch_seq;
+
+CREATE TABLE branches
+(
+	id_branch SERIAL,
+	name_branch VARCHAR (255) NOT NULL,
+	id_prj INTEGER NOT NULL,
+	date_branch TIMESTAMP NOT NULL,
+	PRIMARY KEY (id_branch),
+	FOREIGN KEY (id_prj) REFERENCES projects (id_prj) ON DELETE CASCADE
+);
+
+-----------------------------------------------------------------------------
+-- projects (2)
+-----------------------------------------------------------------------------
+
+ALTER TABLE projects
+	ADD CONSTRAINT projects_FK_idb FOREIGN KEY (DEFAULT_branch)
+	REFERENCES branches (id_branch) ON DELETE RESTRICT;
+
+-----------------------------------------------------------------------------
+-- maintainers
+-----------------------------------------------------------------------------
+
+DROP TABLE maintainers;
+
+CREATE TABLE maintainers
+(
+	id_branch INTEGER,
+	id_user INTEGER,
+	PRIMARY KEY (id_branch, id_user),
+	FOREIGN KEY (id_branch) REFERENCES branches ON DELETE CASCADE,
+	FOREIGN KEY (id_user) REFERENCES users ON DELETE CASCADE
+);
+
+-----------------------------------------------------------------------------
+-- releases
+-----------------------------------------------------------------------------
+
+DROP TABLE releases CASCADE;
+-- DROP SEQUENCE releases_id_rel_seq;
+
+CREATE TABLE releases
+(
+	id_rel SERIAL,
+	name_rel VARCHAR (255) NOT NULL,
+	date_rel TIMESTAMP NOT NULL,
+	status INTEGER DEFAULT 0 NOT NULL CHECK (status >= 0 AND status <= 7),
+	nb_projs INTEGER DEFAULT 0 NOT NULL CHECK (nb_projs >= 0),
+	changes VARCHAR (255) DEFAULT '',
+	download VARCHAR (255) DEFAULT '',
+	valid_rel INT2 DEFAULT 0 NOT NULL,
+	id_branch INTEGER,
+	id_lic INTEGER,
+	PRIMARY KEY (id_rel),
+	UNIQUE (id_branch, name_rel),
+	FOREIGN KEY (id_branch) REFERENCES branches ON DELETE CASCADE,
+	FOREIGN KEY (id_lic) REFERENCES licenses ON DELETE RESTRICT
+);
+
+-----------------------------------------------------------------------------
+-- authors
+-----------------------------------------------------------------------------
+
+DROP TABLE authors;
+
+CREATE TABLE authors
+(
+	id_user INTEGER,
+	id_rel INTEGER,
+	PRIMARY KEY (id_user, id_rel),
+	FOREIGN KEY (id_user) REFERENCES users ON DELETE CASCADE,
+	FOREIGN KEY (id_rel) REFERENCES releases ON DELETE CASCADE
+);
+
+-----------------------------------------------------------------------------
+-- written
+-----------------------------------------------------------------------------
+
+DROP TABLE written;
+
+CREATE TABLE written
+(
+	id_rel INTEGER,
+	id_lang INTEGER,
+	PRIMARY KEY (id_rel, id_lang),
+	FOREIGN KEY (id_rel) REFERENCES releases ON DELETE CASCADE,
+	FOREIGN KEY (id_lang) REFERENCES languages ON DELETE RESTRICT
+);
+
+-----------------------------------------------------------------------------
+-- runson
+-----------------------------------------------------------------------------
+
+DROP TABLE runson;
+
+CREATE TABLE runson
+(
+	id_rel INTEGER,
+	id_pf INTEGER,
+	PRIMARY KEY (id_rel, id_pf),
+	FOREIGN KEY (id_rel) REFERENCES releases ON DELETE CASCADE,
+	FOREIGN KEY (id_pf) REFERENCES platforms ON DELETE RESTRICT
+);
+
+-----------------------------------------------------------------------------
+-- belongsto
+-----------------------------------------------------------------------------
+
+DROP TABLE belongsto;
+
+CREATE TABLE belongsto
+(
+	id_rel INTEGER,
+	id_cat INTEGER,
+	PRIMARY KEY (id_rel, id_cat),
+	FOREIGN KEY (id_rel) REFERENCES releases ON DELETE CASCADE,
+	FOREIGN KEY (id_cat) REFERENCES categories ON DELETE RESTRICT
+);
+
+-----------------------------------------------------------------------------
+-- igoan_admins
+-----------------------------------------------------------------------------
+
+DROP TABLE igoan_admins;
+
+CREATE TABLE igoan_admins
+(
+	id_user INTEGER,
+	PRIMARY KEY (id_user),
+	FOREIGN KEY (id_user) REFERENCES users ON DELETE CASCADE
+);
