@@ -181,7 +181,7 @@ class Project
 	}
 	function get_last_release()
 	{
-	  $result = sql_do('select id_rel from releases join branches using (id_branch) join projects using (id_prj) where id_branch=default_branch and id_prj=\''.int($this->get_id_prj()).'\' order by date_rel desc limit 1');
+	  $result = sql_do('SELECT id_rel FROM '.DB_PREF.'_releases JOIN '.DB_PREF.'_branches USING (id_branch) JOIN '.DB_PREF.'_projects USING (id_prj) WHERE '.DB_PREF.'_branches.id_branch='.DB_PREF.'_projects.default_branch AND '.DB_PREF.'_projects.id_prj=\''.int($this->get_id_prj()).'\' ORDER BY date_rel DESC LIMIT 1');
 	  if ($result->numRows() == 0)
 	    return (0);
 	  else {

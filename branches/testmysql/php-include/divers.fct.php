@@ -25,7 +25,10 @@
 <?php
 
 function http_redir($str) {
-	header('Location: http://'.$_SERVER['SERVER_NAME'].REMOTE_PATH.$str);
+	/* WHOUAA le vilain hack tout pourri :p */
+	/* Note that it forbids a /htdocs/REMOTE_PATH/ directory... */
+	$path = (substr($str, 0, strlen(REMOTE_PATH)) == REMOTE_PATH) ? $str : REMOTE_PATH.$str;
+	header('Location: http://'.$_SERVER['SERVER_NAME'].$path);
 	exit;
 }
 

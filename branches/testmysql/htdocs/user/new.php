@@ -119,7 +119,7 @@ if (!errors() and isset($login)) { ?>
 <?php } else {
 flush_errors();
 }
-?>	
+?>
 	<h2> Personal information </h2>
 	<div class="description">
 		<div class="block">
@@ -142,6 +142,6 @@ flush_errors();
 	</div>
 	</form>
 </div>
-<?php } 
+<?php }
 footer_box();
 ?>

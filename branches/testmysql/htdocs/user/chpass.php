@@ -1,6 +1,6 @@
 <?php
 #
-# Copyright (c) 2003-2004 Igoan.
+# Copyright (c) 2003-2005 Igoan.
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
@@ -49,9 +49,7 @@ if (isset($_GET['action']) &&
 		append_error('Aha. Yes of course ...');
 	}
 
-	if (errors()) {
-		flush_errors();
-	} else {
+	if (!errors()) {
 		// do the job
 		$me->set_passwd($_GET['passwd1']);
 		$me->write();
@@ -59,12 +57,35 @@ if (isset($_GET['action']) &&
 	}
 }
 
+header_box('Igoan :: Change Password :: '.$me->get_user_name());
 
 ?>
-<h1>Changing your user password</h1>
-<form>
-Please give your <strong>actual</strong> password first: <input type="password" name="oldpass" /><br />
-Then your new password: <input type="password" name="passwd1" /><br />
-Twice for verification: <input type="password" name="passwd2" /><br />
-<input type="submit" name="action" value="Change Password" />
-</form>
+<div id="main">
+<?php
+if (errors()) {
+	flush_errors();
+} ?>
+	<h2>Changing your user password</h2>
+	<form>
+	<div class="description">
+		<div class="block">
+			<label for="oldpass">Please give your <strong>actual</strong> password first:</label>
+			<input type="password" name="oldpass" id="oldpass"/>
+		</div>
+		<div class="block">
+			<label for="passwd1">Then your new password:</label>
+			<input type="password" name="passwd1" id="passwd1"/>
+		</div>
+		<div class="block">
+			<label for="passwd2">Twice for verification:</label>
+			<input type="password" name="passwd2" id="passwd1"/>
+		</div>
+		<div class="block submit">
+			<label for="submit"> Submit: </label>
+			<input type="submit" name="action" value="Change Password" id="submit"/>
+		</div>
+	</form>
+</div>
+<?php
+footer_box();
+?>
