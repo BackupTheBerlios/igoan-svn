@@ -1,6 +1,6 @@
 <?php
 #
-# Copyright (c) 2003-2004 Igoan.
+# Copyright (c) 2003-2005 Igoan.
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
@@ -24,31 +24,28 @@
 ?>
 <?php
 
-// stripslashing des arguments
-if (!empty($_GET)) foreach ($_GET as $key => $value) {
-	$_GET[$key] = stripslashes($value);
-	if (substr($key, 0, 3) == "id_") {
-		$_GET[$key] = (int)$value;
+if (get_magic_quotes_gpc())
+{
+	foreach($_GET as $k => $v)
+	{
+		if (is_array($v))
+			continue;
+		$_GET[$k] = stripslashes($v);
+	}
+    
+	foreach($_POST as $k => $v)
+	{
+		if (is_array($v))
+			continue;
+		$_POST[$k] = stripslashes($v);
+	}
+	
+	foreach($_COOKIE as $k => $v)
+	{
+		if (is_array($v))
+			continue;
+		$_COOKIE[$k] = stripslashes($v);
 	}
 }
 
-// config PHP local
-ini_set('session.use_cookies', 1);
-#if (ereg("igoan.org", $_SERVER['SERVER_NAME'])) {
-#	ini_set('session.save_path', '/data/www/org/n/a/igoan.org/a/t/beta/tmp');
-#}
-
-// sessions
-session_start();
-if (!isset($_SESSION['id']))
-	$_SESSION['id'] = 0;
-if (!isset($_SESSION['error']))
-	$_SESSION['error'] = '';
-
-require_once 'error.fct.php';
-require_once 'layout.fct.php';
-require_once 'divers.fct.php';
-require_once 'database.fct.php';
-require_once 'Igoandb.class.php';
-$igoandb = new Igoandb();
 ?>

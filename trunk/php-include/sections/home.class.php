@@ -21,21 +21,15 @@
 #
 ?>
 <?php
-	# we'll just display the homepage when PATH_INFO is not set
-	if (!empty($_SERVER['PATH_INFO']))
-		$argv = explode('/', substr($_SERVER['PATH_INFO'], 1));		
-	else
-		$argv = array(0 => 'home');	
+	require_once IGOAN_SECTION_PATH . 'section.class.php';
 	
-	switch ($argv[0])
+	class HomeSection extends Section
 	{
-		case 'home':
-		default:
-			require_once IGOAN_SECTION_PATH . 'home.class.php';
-			$section = new HomeSection($argv);
-			break;
+		function __construct($argv)
+		{
+			global $smarty;
+			
+			$this->_template = $smarty->fetch('home.tpl');		
+		}
 	}
-	
-	$smarty->assign_by_ref('rubrique', $rubrique);
-	$smarty->display('index.tpl');
 ?>

@@ -21,21 +21,13 @@
 #
 ?>
 <?php
-	# we'll just display the homepage when PATH_INFO is not set
-	if (!empty($_SERVER['PATH_INFO']))
-		$argv = explode('/', substr($_SERVER['PATH_INFO'], 1));		
-	else
-		$argv = array(0 => 'home');	
+
+	ini_set('session.use_cookies', 1);
 	
-	switch ($argv[0])
-	{
-		case 'home':
-		default:
-			require_once IGOAN_SECTION_PATH . 'home.class.php';
-			$section = new HomeSection($argv);
-			break;
-	}
+	define ('IGOAN_SECTION_PATH', dirname(__FILE__) . '/sections/');
+	define ('IGOAN_SMARTY_PATH',  dirname(__FILE__) . '/smarty/');
 	
-	$smarty->assign_by_ref('rubrique', $rubrique);
-	$smarty->display('index.tpl');
+	require_once dirname(__FILE__) . '/helpers/stripslashes.php';
+	require_once dirname(__FILE__) . '/config/db.php';
+	require_once dirname(__FILE__) . '/config/smarty.php';
 ?>
