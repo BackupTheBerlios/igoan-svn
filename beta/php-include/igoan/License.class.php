@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: License.class.php,v 1.1.1.1 2005/01/03 02:39:41 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -26,16 +26,12 @@
 
 require_once 'PEAR.php';
 
-class License extends PEAR {
+class License
+{
 	// private
-	var $_id_lic;
-	var $_name_lic;
-	var $_valid_lic;
-
-	function License()
-	{
-		$this->PEAR();
-	}
+	protected $_id_lic;
+	protected $_name_lic;
+	protected $_valid_lic;
 
 	// public
 	function set_id_lic($id)
@@ -104,7 +100,12 @@ function license_get_by_id($id)
 function license_new($nom, $term)
 {
 	$id_lic = pick_id('licenses_id_lic_seq');
-	return (is_a(sql_do('INSERT INTO licenses (id_lic,name_lic,terms) VALUES (\''.int($id_lic).'\',\''.str($nom).'\',\''.str($term).'\')'), 'DB-Error') ? 0 : $id_lic);
+	try {
+		sql_do('INSERT INTO licenses (id_lic,name_lic,terms) VALUES (\''.int($id_lic).'\',\''.str($nom).'\',\''.str($term).'\')');
+	} catch (DatabaseException $e) {
+		return 0;
+	}
+	return $id_lic;
 }
 
 function license_list()

@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: prepend.php,v 1.1.1.1 2004/12/30 21:48:40 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -32,11 +32,11 @@ if (!empty($_GET)) foreach ($_GET as $key => $value) {
 	}
 }
 
-// config PHP
+// config PHP local
 ini_set('session.use_cookies', 1);
-if (ereg("igoan.org", $_SERVER['SERVER_NAME'])) {
-	ini_set('session.save_path', '/data/www/org/n/a/igoan.org/a/t/beta/tmp');
-}
+#if (ereg("igoan.org", $_SERVER['SERVER_NAME'])) {
+#	ini_set('session.save_path', '/data/www/org/n/a/igoan.org/a/t/beta/tmp');
+#}
 
 // sessions
 session_start();
@@ -48,4 +48,7 @@ if (!isset($_SESSION['error']))
 require_once 'error.fct.php';
 require_once 'layout.fct.php';
 require_once 'divers.fct.php';
+require_once 'database.fct.php';
+require_once 'Igoandb.class.php';
+$igoandb = new Igoandb();
 ?>

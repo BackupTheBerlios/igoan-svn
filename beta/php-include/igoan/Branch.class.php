@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: Branch.class.php,v 1.1.1.1 2005/01/03 02:42:04 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -24,21 +24,14 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
-class Branch extends PEAR
+class Branch
 {
 	// private
-	var $_id_branch;
-	var $_name_branch;
-	var $_id_prj;
-	var $_date_branch;
+	protected $_id_branch;
+	protected $_name_branch;
+	protected $_id_prj;
+	protected $_date_branch;
 
-	function Branch()
-	{
-		$this->PEAR();
-	}
-	
 	// public
 	function set_id_branch($id)
 	{
@@ -109,7 +102,7 @@ class Branch extends PEAR
 	{
 		return (get_array_by_query("SELECT id_user FROM maintainers WHERE id_branch='".int($this->get_id_branch())."'"));
 	}
-     	function list_admins()
+	function list_admins()
 	{
 	  return get_array_by_query("SELECT id_user FROM maintainers WHERE id_branch='".int($this->get_id_branch())."' UNION SELECT id_user FROM admins JOIN projects USING (id_prj) JOIN branches USING (id_prj) WHERE id_branch='".int($this->get_id_branch())."'");
 	}
@@ -149,9 +142,9 @@ function branch_new($name, $id_prj)
 {
 	$id_branch = pick_id('branches_id_branch_seq');
 
-	$result = sql_do('INSERT INTO branches (id_branch,name_branch,id_prj,date_branch) VALUES (\''.int($id_branch).'\',\''.str($name).'\',\''.int($id_prj).'\',\''.date('Y-m-d H:i:s').'\')');
-	if (is_a($result, 'DB-Error')) {
-		//append_error("Unknown error executing [$sql].");
+	try {
+		sql_do('INSERT INTO branches (id_branch,name_branch,id_prj,date_branch) VALUES (\''.int($id_branch).'\',\''.str($name).'\',\''.int($id_prj).'\',\''.date('Y-m-d H:i:s').'\')');
+	} catch (DatabaseException $e) {
 		return (0);
 	}
 	return ($id_branch);

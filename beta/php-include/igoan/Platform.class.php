@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: Platform.class.php,v 1.1.1.1 2005/01/03 02:38:12 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -24,18 +24,12 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
-class Platform extends PEAR {
+class Platform
+{
 	// private
-	var $_id_pf;
-	var $_name_pf;
-	var $_valid_pf;
-
-	function Platform()
-	{
-		$this->PEAR();
-	}
+	protected $_id_pf;
+	protected $_name_pf;
+	protected $_valid_pf;
 
 	// public
 	function set_id_pf($id)
@@ -104,8 +98,12 @@ function platform_get_by_id($id)
 function platform_new($nom)
 {
 	$id_pf = pick_id('platforms_id_pf_seq');
-	$result = sql_do('INSERT INTO platforms (id_pf,name_pf) VALUES ('.int($id_pf).',\''.int($nom).'\')');
-	return (is_a($result, 'DB-Error') ? 0 : $id_pf;
+	try {
+		$result = sql_do('INSERT INTO platforms (id_pf,name_pf) VALUES ('.int($id_pf).',\''.int($nom).'\')');
+	} catch (DatabaseException $e) {
+		return 0;
+	}
+	return $id_pf;
 }
 
 function platform_list()

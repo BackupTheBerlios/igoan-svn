@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: error.fct.php,v 1.1.1.1 2005/01/03 01:58:55 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -23,8 +23,6 @@
 #
 ?>
 <?php
-
-require_once 'PEAR.php';
 
 function errors() {
 	return (isset($_SESSION['error']) && !empty($_SESSION['error']));
@@ -58,7 +56,7 @@ function flush_errors_exit() {
 	}
 	echo '<a href="/">Back home</a>';
 	exit; */
-	include($_SERVER['DOCUMENT_ROOT'].'/error.php');
+	require($_SERVER['DOCUMENT_ROOT'].'/error.php');
 	exit;
 }
 function append_error_exit($str) {
@@ -68,7 +66,7 @@ function append_error_exit($str) {
 
 
 ### Handling PHP errors
-error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
 
 // error handler function
 function myErrorHandler($errno, $errstr, $errfile, $errline) {
@@ -82,6 +80,9 @@ function myErrorHandler($errno, $errstr, $errfile, $errline) {
   case E_NOTICE:
     append_error('Warning: '.$errstr);
     break;
+  case E_STRICT:
+    append_error('PHP5: '.$errstr);
+    break;
   default:
     echo "UnkownIGOAN error type: [$errno] $errstr<br>\n";
     break;
@@ -89,8 +90,10 @@ function myErrorHandler($errno, $errstr, $errfile, $errline) {
 }
 set_error_handler("myErrorHandler");
 
-### *Not* handling PEAR errors
-
-PEAR::setErrorHandling(PEAR_ERROR_RETURN);
-
+// exception handler function
+function myExceptionHandler($exception) {
+  append_error('Uncaught exception: '.$exception->getMessage().'<br/>');
+  //$exception->getTraceAsString());
+}
+set_exception_handler('myExceptionHandler');
 ?>

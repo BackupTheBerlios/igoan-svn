@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: Language.class.php,v 1.1.1.1 2005/01/03 02:40:45 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -24,18 +24,12 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
-class Language extends PEAR {
+class Language
+{
 	// private
-	var $_id_lang;
-	var $_name_lang;
-	var $_valid_lang;
-
-	function Language()
-	{
-		$this->PEAR();
-	}
+	protected $_id_lang;
+	protected $_name_lang;
+	protected $_valid_lang;
 
 	// public
 	function set_id_lang($id)
@@ -104,8 +98,12 @@ function language_get_by_id($id)
 function language_new($nom)
 {
 	$id_lang = pick_id('languages_id_lang_seq');
-	$result = sql_do('INSERT INTO languages (id_lang,name_lang) VALUES ('.int($id_lang).',\''.str($nom).'\')');
-	return (is_a($result, 'DB-Error') ? 0 : $id_lang;
+	try {
+		sql_do('INSERT INTO languages (id_lang,name_lang) VALUES ('.int($id_lang).',\''.str($nom).'\')');
+	} catch (DatabaseException $e) {
+		return 0;
+	}
+	return $id_lang;
 }
 
 function language_list()

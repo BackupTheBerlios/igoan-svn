@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: Category.class.php,v 1.1.1.1 2005/01/03 02:41:33 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -24,20 +24,14 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
-class Category extends PEAR {
+class Category
+{
 	// private
-	var $_id_cat;
-	var $_name_cat;
-	var $_index;
-	var $_parent;
-	var $_valid_cat;
-
-	function Category()
-	{
-		$this->PEAR();
-	}
+	protected $_id_cat;
+	protected $_name_cat;
+	protected $_index;
+	protected $_parent;
+	protected $_valid_cat;
 
 	// public
 	function set_id_cat($id)
@@ -136,7 +130,12 @@ function category_new($index, $nom)
 	if ($i == 10) return (-1);
 
 	$id_cat = pick_id('categories_id_cat_seq');
-	return (is_a(sql_do('INSERT INTO categories (id_cat,index,name_cat) VALUES (\''.int($id_cat).'\',\''.str($index).int($i).'\',\''.str($nom).'\')'), 'DB-Error') ? 0 : $id_cat);
+	try {
+		sql_do('INSERT INTO categories (id_cat,index,name_cat) VALUES (\''.int($id_cat).'\',\''.str($index).int($i).'\',\''.str($nom).'\')');
+	} catch (DatabaseException $e) {
+		return 0;
+	}
+	return $id_cat;
 }
 
 function category_list($level = '') 

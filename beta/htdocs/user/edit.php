@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: edit.php,v 1.1.1.1 2005/01/03 02:27:11 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -104,6 +104,10 @@ categories_box();
 			<hr/>
 			<p>
 			<input type="submit" name="submit" value="Update" />
+			</p>
+			<hr/>
+			<p>
+			<a href="/user/chpass.php">Change your password</a>
 			</p>
 		</div>
 	</div>

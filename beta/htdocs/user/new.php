@@ -1,10 +1,10 @@
 <?php
 #
-# Copyright (c) 2003-2004 Igoan.
+# Copyright (c) 2003-2005 Igoan.
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: new.php,v 1.1.1.1 2004/04/08 21:14:37 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -60,7 +60,7 @@ if (isset($_GET['submit']) && ($_GET['submit'] == 'Submit !')) {
 				// envoi de l'email
 				error_reporting(2047);
 				mail($_GET['email'], '[igoan] Account registration confirmation', 
-'This email is a confirmation of your registration to Igoan, 
+'This email is a confirmation of your registration to Igoan,
 the free directory project.
 
 You have entered the following:
@@ -68,10 +68,10 @@ You have entered the following:
   Login name: '.$_GET['login'].'
   Email: '.$_GET['email'].'
 
-Your automatically generated password is \''.$new->get_passwd().'\'. 
+Your automatically generated password is \''.$new->get_passwd().'\'.
 You have to login with your newly created account on the Igoan website
-(http://www.igoan.org/user/login.php) and change your password to 
-active your account. 
+(http://www.igoan.org/user/login.php) and change your password to
+activate your account.
 Then you will be able to register new projects on our databases.
 
 Best regards,
@@ -136,7 +136,7 @@ flush_errors();
 		</div>	
 		<div class="block submit">
 			<label for="submit"> Submit: </label>
-			<input type="submit" id="submit" name="submit" value="Submit !" />
+			<input type="submit" id="submit" name="submit" value="Submit!" />
 		</div>
 		<p style="margin-top: 1.5em; font-size: small"> All fields are mandatory. <br />If everything is correct, your password will be sent to the email address you specified so that you can activate your account.</p>
 	</div>

@@ -1,2 +1,9 @@
-AddDefaultCharset UTF-8
-#Options Indexes
+# local
+php_value include_path '/home/cam/public_html/igoan/www/igoan/php-include/
+php_value auto_prepend_file 'prepend.php'
+#php_value short_open_tag on
+
+# les valeurs globales sont definies dans prepend.php
+ErrorDocument 404 /error.php?code=404
+ErrorDocument 500 /error.php?code=500
+#AddDefaultCharset ISO-8859-15

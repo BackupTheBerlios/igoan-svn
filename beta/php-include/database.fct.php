@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: database.fct.php,v 1.1.1.1 2005/01/01 14:58:26 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -23,29 +23,37 @@
 #
 ?>
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
+function get_array_by_query($sql) {
+	$result = sql_do($sql);
 
-/**
- * Table Definition for runson
- */
-require_once 'DB/DataObject.php';
+	$tab = array();
+	for ($i = 0; $i < $result->numRows(); $i++) {
+		$row = $result->fetchRow();
+		$alone = ($result->numCols() == 1);
+		$tab[$i] = $alone
+			? $row[0]
+			: $row;
+	}
 
-class DO_Runson extends DB_DataObject 
-{
-    ###START_AUTOCODE
-    /* the code below is auto generated do not remove the above tag */
-
-    var $__table = 'runson';                          // table name
-    var $id_rel;                          // int4(4)  not_null unique primary multiple_key
-    var $id_pf;                           // int4(4)  not_null unique primary multiple_key
-
-    /* ZE2 compatibility trick*/
-    function __clone() { return $this;}
-
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('DO_Runson',$k,$v); }
-
-    /* the code above is auto generated do not remove the tag below */
-    ###END_AUTOCODE
+	return ($tab);
 }
-?>
+
+function sql_do($sql) {
+	global $igoandb;
+	try {
+		return ($igoandb->query($sql));
+	} catch (DatabaseException $e) {
+		append_error_exit($e->getMessage());
+	}
+}
+
+function pick_id($seq) {
+	// FIXME: check $seq
+	$result = sql_do('SELECT nextval(\''.$seq.'\')');
+	if ($result->numRows() != 1) {
+		append_error('Unable to fetch a fresh ID.');
+		return (0);
+	}
+	$row = $result->fetchRow();
+	return ($row[0]);
+}

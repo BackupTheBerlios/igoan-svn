@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: delete_release.php,v 1.1.1.1 2004/04/08 21:15:47 cam Exp $
 #
 # This file is part of the Igoan project.
 #

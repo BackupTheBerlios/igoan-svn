@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: index.php,v 1.1.1.1 2004/04/08 21:15:58 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -23,12 +23,11 @@
 #
 ?>
 <?php
-
 require_once 'igoan/Project.class.php';
 require_once 'igoan/User.class.php';
 
 $me = user_get_by_id($_SESSION['id']);
-$result = sql_do('SELECT id_prj FROM projects');
+$result = sql_do('SELECT id_prj FROM projects ORDER BY id_prj DESC');
 
 // show the data (NO PROCESSING HERE PLEASE, ONLY ECHOs)
 header_box('Igoan :: The Free Directory Project');
@@ -42,7 +41,7 @@ login_box($me);
 
 <div class="item soft">
 
-<h2>Projects of the month:</h2>
+<h2>Last project:</h2>
 
 <ul>
 <?php

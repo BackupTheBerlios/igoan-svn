@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id: index.php,v 1.1.1.1 2004/04/08 21:15:08 cam Exp $
+# $Id: Result.class.php,v 1.1.1.1 2004/12/30 22:26:27 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -14,7 +14,7 @@
 #
 # Igoan is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -24,19 +24,24 @@
 ?>
 <?php
 
-require_once 'igoan/User.class.php';
+class Result
+{
+	protected $result;
 
-// permission de l'user (admin global)
-$me = user_get_by_id($_SESSION['id']);
-if (!$me || !$me->is_global_admin()) {
-	append_error_exit('Permission denied: global admin flag required');
+	function __construct($result)
+	{
+		$this->result = $result;
+	}
+	function numRows()
+	{
+		return pg_num_rows($this->result);
+	}
+	function numCols()
+	{
+		return pg_num_fields($this->result);
+	}
+	function fetchRow()
+	{
+		return pg_fetch_row($this->result);
+	}
 }
-?>
-<h2>IGOAdmiN</h2>
-
-<ul>
-<li><a href="/admin/cats.php">Gestion des categories</a></li>
-<li><a href="/admin/plats.php">Gestion des plateformes</a></li>
-<li><a href="/admin/langs.php">Gestion des langages de prog</a></li>
-<li><a href="/admin/licenses.php">Gestion des licences</a></li>
-</ul>

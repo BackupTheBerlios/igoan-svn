@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: Release.class.php,v 1.1.1.1 2005/01/03 02:36:50 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -24,26 +24,19 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
-class Release extends PEAR
+class Release
 {
 	// private
-	var $_id_rel;
-	var $_name_rel;
-	var $_date_rel;
-	var $_status;
-	var $_nb_projs;
-	var $_changes;
-	var $_download;
-	var $_valid_rel;
-	var $_id_branch;
-	var $_id_lic;
-
-	function Release()
-	{
-		$this->PEAR();
-	}
+	protected $_id_rel;
+	protected $_name_rel;
+	protected $_date_rel;
+	protected $_status;
+	protected $_nb_projs;
+	protected $_changes;
+	protected $_download;
+	protected $_valid_rel;
+	protected $_id_branch;
+	protected $_id_lic;
 
 	// public
 	# pour les accesseurs, si des fois faut les refaire: for i in id_rel name_rel date_rel status nb_projs changes download valid_rel id_branch id_lic; do echo -e "\tfunction set_$i(\$$i)\n\t{\n\t\t\$this->_$i = \$$i;\n\t}\n\tfunction get_$i(\$$i)\n\t{\n\t\treturn (\$this->_$i);\n\t}"; done
@@ -174,8 +167,13 @@ function release_get_by_id($id_rel)
 function release_new($id_branch, $name_rel, $status, $changes, $download, $valid_rel)
 {
 	$id_rel = pick_id('releases_id_rel_seq');
-	$result = sql_do('INSERT INTO releases (id_rel,name_rel,date_rel,status,nb_projs,changes,download,valid_rel) VALUES (\''.int($id_rel).'\',\''.str($name_rel).'\',\''.date('Y-m-d H:i:s').'\',\''.int($status).'\',\''.int($nb_projs).'\',\''.str($changes).'\',\''.str($download).'\',\''.(bool)int($valid_rel).'\')');
-	return (is_a($result, 'DB-Error') ? 0 : $id_rel);
+	try {
+		$result = sql_do('INSERT INTO releases (id_rel,name_rel,date_rel,status,nb_projs,changes,download,valid_rel) VALUES (\''.int($id_rel).'\',\''.str($name_rel).'\',\''.date('Y-m-d H:i:s').'\',\''.int($status).'\',\''.int($nb_projs).'\',\''.str($changes).'\',\''.str($download).'\',\''.(bool)int($valid_rel).'\')');
+	} catch (DatabaseException $e) {
+		return 0;
+	}
+
+	return ($id_rel);
 }
 
 $release_status = array (

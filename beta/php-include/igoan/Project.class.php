@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: Project.class.php,v 1.1.1.1 2005/01/03 02:47:05 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -24,25 +24,19 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
-class Project extends PEAR
+class Project
 {
 	// private
-	var $_id_prj;
-	var $_name_prj;
-	var $_url_prj;
-	var $_desc_prj;
-	var $_screenshot;
-	var $_shortname;
-	var $_date_prj;
-	var $_valid_prj;
-	var $_default_branch;
-	var $_owner;
-	function Project()
-	{
-		$this->PEAR();
-	}
+	protected $_id_prj;
+	protected $_name_prj;
+	protected $_url_prj;
+	protected $_desc_prj;
+	protected $_screenshot;
+	protected $_shortname;
+	protected $_date_prj;
+	protected $_valid_prj;
+	protected $_default_branch;
+	protected $_owner;
 
 	// public
 	function set_id_prj($id)
@@ -112,7 +106,7 @@ class Project extends PEAR
 	}
 	function get_valid_prj()
 	{
-		return ($this->valid_prj);
+		return ($this->_valid_prj);
 	}
 	function set_default_branch($id_branch)
 	{
@@ -231,9 +225,9 @@ function project_new($name_prj, $shortname, $description, $homepage)
 
 	$id_prj = pick_id('projects_id_prj_seq');
 
-	$result = sql_do('INSERT INTO projects (id_prj,name_prj,shortname,desc_prj,url_prj,date_prj,valid_prj) VALUES (\''.int($id_prj).'\',\''.str($name_prj).'\',\''.str($shortname).'\',\''.str($description).'\',\''.str($homepage).'\',\''.date('Y-m-d H:i:s').'\',0)');
-	if (is_a($result, 'DB-Error')) {
-		//append_error("Unknown error executing [$sql].");
+	try {
+		$result = sql_do('INSERT INTO projects (id_prj,name_prj,shortname,desc_prj,url_prj,date_prj,valid_prj) VALUES (\''.int($id_prj).'\',\''.str($name_prj).'\',\''.str($shortname).'\',\''.str($description).'\',\''.str($homepage).'\',\''.date('Y-m-d H:i:s').'\',0)');
+	} catch (DatabaseException $e) {
 		return (0);
 	}
 	return ($id_prj);

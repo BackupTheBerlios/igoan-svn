@@ -1,10 +1,10 @@
 <?php
 #
-# Copyright (c) 2003-2004 Igoan.
+# Copyright (c) 2003-2005 Igoan.
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: view.php,v 1.1.1.1 2004/04/08 21:14:41 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -70,11 +70,11 @@ if ($list) {
     if ($tmp) {
       $rel = $tmp->get_last_release();
       if ($rel) {
-	$version = $rel->get_name_rel();
-	$date = $rel->get_date_rel();
+        $version = $rel->get_name_rel();
+        $date = $rel->get_date_rel();
       } else {
-	$version = '-';
-	$date = '-';
+        $version = '-';
+        $date = '-';
       }
       $d_myprj .= '<tr><td><a href="/project/view.php?id_prj='.$tmp->get_id_prj().'">'.$tmp->get_name_prj().'</a></td><td>'.$version.'</td><td>'.$date.'</td><td>'.(($tmp->get_owner()==$requested->get_id_user())?'Owner':'').'</td></tr>';
     }
@@ -154,7 +154,7 @@ else $myself = False;
 header_box('Igoan :: View User :: ' . $requested->get_name_user());
 ?>
 <div id="main">
-<?php login_box($myself ? $requested : 0); categories_box(); ?>
+<?php login_box(); categories_box(); ?>
 	<div class="item soft">
 		<h4> View User :: <?php echo $requested->get_name_user(); ?></h4>
 		<div class="infos">
@@ -200,7 +200,7 @@ header_box('Igoan :: View User :: ' . $requested->get_name_user());
 			</dl>
 			<dl>
 				<dt> User id: </dt>
-				<dd> #<?php echo $requested->get_id_user(); ?> </dd>
+				<dd> <?php echo $requested->get_id_user(); ?> </dd>
 			</dl>
 			<?php echo $d_user_desc; ?>
 			<?php echo $d_misc; ?>

@@ -1,10 +1,10 @@
 <?php
 #
-# Copyright (c) 2003-2004 Igoan.
+# Copyright (c) 2003-2005 Igoan.
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: login.php,v 1.1.1.1 2004/04/08 21:14:31 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -60,7 +60,7 @@ header_box('Igoan :: Login');
 		</div>
 		<div class="block submit">
 			<label for="submit"> Submit: </label>
-			<input type="submit" id="submit" name="submit" value="Submit !" />
+			<input type="submit" id="submit" name="submit" value="Submit!" />
 		</div>
 	</div>
 	</form>

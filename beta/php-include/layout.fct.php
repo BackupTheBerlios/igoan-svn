@@ -1,10 +1,10 @@
 <?php
 #
-# Copyright (c) 2003-2004 Igoan.
+# Copyright (c) 2003-2005 Igoan.
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: layout.fct.php,v 1.1.1.1 2004/04/08 21:17:40 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -25,9 +25,11 @@
 <?php
 
 require_once 'igoan/Project.class.php';
+require_once 'igoan/User.class.php';
 
 // FIXME: à implémenter correctement:
-function login_box($me) {
+function login_box() {
+	$me = user_get_by_id($_SESSION['id']);
 ?>
 	<div class="stuff">
 	<div class="login"><?php
@@ -134,31 +136,37 @@ echo '<?xml version="1.0" encoding="iso-8859-15"?>';
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
-	<title><?php echo $title; ?></title>
-	<link rel="stylesheet" title="Igoan - Default Stylesheet" href="/style/default.css" />
+<title><?php echo $title; ?></title>
+<link rel="stylesheet" title="Igoan - Default Stylesheet" href="/style/default.css"/>
 </head>
+
 <body id="www_igoan_org" class="add_project">
+
 <div id="header">
-<h1><img src="/images/logo.png" width="300" height="80" alt="Igoan.org" title="Igoan, Free Software Directory Project" /></h1>
-	<div class="menu links">
-		<a href="/index.php"><img src="/images/home.png" alt="home" /></a>
-		<img src="/images/separator.png" alt=" " />
-		<a href="/updates.php"><img src="/images/updates.png" alt="latest updates" /></a>
-		<img src="/images/separator.png" alt=" " />
-		<a href="/browse.php"><img src="/images/browse.png" alt="browse categories " /></a>
-		<img src="/images/separator.png" alt=" " />
-		<a href="/igoan/about.php"><img src="/images/about.png" alt="about " /></a>
-		<img src="/images/separator.png" alt=" " />
-		<a href="/igoan/contact.php"><img src="/images/contact.png" alt="contact " /></a>
-	</div>
-	<br style="clear: both;" />
+<h1><a href="/"><img src="/images/logo.png" width="300" height="80"
+alt="Igoan.org" title="Igoan, Free Software Directory Project" /></a></h1>
+
+<div class="menu links">
+<a href="/"><img src="/images/home.png" alt="home" /></a>
+<img src="/images/separator.png" alt=" " />
+<a href="/updates.php"><img src="/images/updates.png" alt="latest updates" /></a>
+<img src="/images/separator.png" alt=" " />
+<a href="/browse.php"><img src="/images/browse.png" alt="browse categories " /></a>
+<img src="/images/separator.png" alt=" " />
+<a href="http://www.cameuh.net/projects/igoan/"><img src="/images/about.png" alt="about " /></a>
+<img src="/images/separator.png" alt=" " />
+<a href="/igoan/contact.php"><img src="/images/contact.png" alt="contact " /></a>
+</div>
+<br style="clear: both;" />
 </div><?php
 }
 
 function footer_box() { ?>
 <div id="footer">
-	This page was generated in 0.2seconds. (Igoan v0.42, 256 projects in the database) <br />
-	&copy; Igoan 2003 - <a href="http://validator.w3.org/check/referer">check xhtml</a>
+This page was generated in 0.2seconds. (Igoan v0.42, 256 projects in the
+database)<br/>
+&copy; Igoan 2003-2005 - <a href="http://validator.w3.org/check/referer">check
+xhtml</a>
 </div>
 </body>
 </html><?php

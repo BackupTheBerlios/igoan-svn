@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: chpass.php,v 1.1.1.1 2005/01/03 02:29:33 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -38,9 +38,9 @@ if (isset($_GET['action']) &&
 	}
 
 	// check the old password
-	if ($_GET['oldpass'] != $me->passwd) {
+	if ($_GET['oldpass'] != $me->get_passwd()) {
 		append_error('Wrong old password.');
-	} 
+	}
 	
 	// check the new passwords
 	else if ($_GET['passwd1'] != $_GET['passwd2']) {
@@ -53,7 +53,7 @@ if (isset($_GET['action']) &&
 		flush_errors();
 	} else {
 		// do the job
-		$me->passwd = $_GET['passwd1'];
+		$me->set_passwd($_GET['passwd1']);
 		$me->write();
 		http_redir('/user/view.php');
 	}

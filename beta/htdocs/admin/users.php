@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: users.php,v 1.1.1.1 2004/04/08 21:15:26 cam Exp $
 #
 # This file is part of the Igoan project.
 #

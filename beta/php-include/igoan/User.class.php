@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id$
+# $Id: User.class.php,v 1.1.1.1 2005/01/03 02:21:05 cam Exp $
 #
 # This file is part of the Igoan project.
 #
@@ -24,28 +24,20 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
-class User extends PEAR
+class User
 {
-	// private
-	var $_id_user;
-	var $_name_user;
-	var $_mail;
-	var $_url_user;
-	var $_date_user;
-	var $_valid_user;
-	var $_login;
-	var $_passwd;
-	var $_desc_user;
-	var $_nb_logins;
-	var $_photo;
-	function User()
-	{
-		$this->PEAR();
-	}
+	protected $_id_user;
+	protected $_name_user;
+	protected $_mail;
+	protected $_url_user;
+	protected $_date_user;
+	protected $_valid_user;
+	protected $_login;
+	protected $_passwd;
+	protected $_desc_user;
+	protected $_nb_logins;
+	protected $_photo;
 
-	// public
 	function set_id_user($id)
 	{
 		$this->_id_user = int($id);
@@ -244,14 +236,13 @@ function user_new($login, $name, $email, $homepage = '', $desc = '')
 	$passwd = substr(md5(rand()), 0, 8);
 
 	$id_user = pick_id('users_id_user_seq');
-	$result = sql_do('INSERT INTO users (id_user,name_user,mail,url_user,date_user,valid_user,login,passwd,desc_user) VALUES (\''.int($id_user).'\',\''.str($name).'\',\''.str($email).'\',\''.str($homepage).'\',\''.date('Y-m-d H:i:s').'\',0,\''.str($login).'\',\''.str($passwd).'\',\''.str($desc).'\')');
-	if (is_a($result, 'DB-Error')) {
-		//append_error("Unknown error executing [$sql].");
+	try {
+		$result = sql_do('INSERT INTO users (id_user,name_user,mail,url_user,date_user,valid_user,login,passwd,desc_user) VALUES (\''.int($id_user).'\',\''.str($name).'\',\''.str($email).'\',\''.str($homepage).'\',\''.date('Y-m-d H:i:s').'\',0,\''.str($login).'\',\''.str($passwd).'\',\''.str($desc).'\')');
+	} catch (DatabaseException $e) {
+		//append_error($e->getMessage());
 		return (0);
 	}
-	# dequoi ?
-	#return ($passwd);
-	
+
 	return ($id_user);
 }
 
@@ -264,8 +255,9 @@ function user_new_pseudo($name, $email)
 	}
 
 	$id_user = pick_id('users_id_user_seq');
-	$result = sql_do('INSERT INTO users (id_user,name_user,mail,date_user,valid_user) VALUES (\''.int($id_user).'\',\''.str($name).'\',\''.str($email).'\',\''.date('Y-m-d H:i:s').'\',0)');
-		if (is_a($result, 'DB-Error')) {
+	try {
+		$result = sql_do('INSERT INTO users (id_user,name_user,mail,date_user,valid_user) VALUES (\''.int($id_user).'\',\''.str($name).'\',\''.str($email).'\',\''.date('Y-m-d H:i:s').'\',0)');
+	} catch (DatabaseException $e) {
 		//append_error("Unknown error executing [$sql].");
 		return (0);
 	}
