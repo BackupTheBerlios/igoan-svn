@@ -1,0 +1,29 @@
+Quelques notes d'installation :
+
+Igoan a besoin, pour fonctionner, de :
+- PHP5
+- Une base de donnée PostgreSQL
+- a functionnal sendmail wrapper
+
+Pour postgresql, il faut creer une base de données (createdb) et un user
+(createuser).
+Dans la base de données, creer les tables avec le code SQL publié sur
+http://wiki.igoan.org/wakka.php?wiki=ModelisationSql, commande \i dans psql.
+Il y aura surement des erreurs car le script efface des tables qui n'existent
+pas et des notice car il cree implicitement des objets.
+Permettre l'user de faire ce qu'il veut dans ces tables.
+
+Mettre les infos pgsql dans le fichier ./php-include/db.php.
+
+Pour php, il faut le configurer pour ajouter le répertoire ./php-include à la
+variable include-path et charger automatiquement le fichier
+./php-include/prepend.php avant le demarrage de chaque script.
+
+Ca peut se faire par un .htaccess a la racine du htdocs par exemple :
+"""
+php_value include_path '/home/cam/public_html/igoan/www/igoan/php-include/
+php_value auto_prepend_file 'prepend.php'
+"""
+
+Les fichiers db.php et .htaccess seront écrasés à chaque svn update. Pour ne pas
+que cela arrive, il faut mettre leur nom dans un .svnignore.
