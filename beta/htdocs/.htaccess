@@ -1,2 +1,2 @@
-php_value include_path ".:/dur2/alternc/html/i/igoan/igoan/beta/php-include"
-php_value auto_prepend_file "prepend.php"
+AddDefaultCharset UTF-8
+Options Indexes
