@@ -23,3 +23,6 @@ Ca peut se faire par un .htaccess a la racine du htdocs par exemple :
 php_value include_path '/home/cam/public_html/igoan/www/igoan/php-include/
 php_value auto_prepend_file 'prepend.php'
 """
+
+Les fichiers db.php et .htaccess seront écrasés à chaque svn update. Pour ne pas
+que cela arrive, il faut mettre leur nom dans un .svnignore.
