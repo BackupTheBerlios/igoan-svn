@@ -1,0 +1,296 @@
+-- Code MySQL pour Igoan
+
+-- Version 1.6.2
+-- Date 2005-03-18
+-- Author cam
+-- Adapting code to work with plain mysql + prefixing table names.
+
+-- Version 1.6.1
+-- Date 2005-02-15
+-- Author cam
+-- Peaufinage du code
+
+-- Version 1.6
+-- Date 2003-11-26
+-- Author cam
+-- Ajout de champs, table, contrainte. Renommages.
+
+-- Version 1.5.1
+-- Date 2003-11-19
+-- Author cam
+-- Correction du code, la prochaine fois je vérifierai avant de submiter :)
+
+-- Version 1.5
+-- Date 2003-11-18 (speciale mat)
+-- Author cam
+-- Quelques renommages et ajouts de champs
+
+-- Version 1.4.1
+-- Date 2003-11-02
+-- Author cam
+-- Code entièrement corrigé et fonctionnel
+
+-- Version 1.4
+-- Date 2003-10-18
+-- Author cam
+-- Code SQL généré par NextObjects
+
+-- --------------------------------------------------------------------------
+-- users
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_users CASCADE;
+
+CREATE TABLE igoan_users
+(
+	id_user INT AUTO_INCREMENT,
+	name_user VARCHAR (255) NOT NULL,
+	mail VARCHAR (255) NOT NULL,
+	url_user VARCHAR (255) DEFAULT '',
+	date_user TIMESTAMP NOT NULL,
+	valid_user INT2 DEFAULT 0 NOT NULL,
+	login VARCHAR (255),
+	passwd VARCHAR (255),
+	desc_user VARCHAR (255),
+	nb_logins INTEGER DEFAULT 0 NOT NULL CHECK (nb_logins >= 0),
+	photo VARCHAR (255),
+	PRIMARY KEY (id_user),
+	UNIQUE (mail),
+	UNIQUE (login)
+);
+
+-- --------------------------------------------------------------------------
+-- categories
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_categories CASCADE;
+
+CREATE TABLE igoan_categories (
+	id_cat INT AUTO_INCREMENT,
+	name_cat VARCHAR (255) NOT NULL,
+	idx VARCHAR (255) DEFAULT '',
+	parent INTEGER,
+	valid_cat INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_cat),
+	UNIQUE (name_cat),
+	FOREIGN KEY (parent) REFERENCES igoan_categories (id_cat) ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------------------------
+-- platforms
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_platforms CASCADE;
+
+CREATE TABLE igoan_platforms
+(
+	id_pf INT AUTO_INCREMENT,
+	name_pf VARCHAR (255) NOT NULL,
+	valid_pf INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_pf),
+	UNIQUE (name_pf)
+);
+
+-- --------------------------------------------------------------------------
+-- licenses
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_licenses CASCADE;
+
+CREATE TABLE igoan_licenses
+(
+	id_lic INT AUTO_INCREMENT,
+	name_lic VARCHAR (255) NOT NULL,
+	terms BLOB NOT NULL,
+	valid_lic INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_lic),
+	UNIQUE (name_lic)
+);
+
+-- --------------------------------------------------------------------------
+-- languages
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_languages CASCADE;
+
+CREATE TABLE igoan_languages
+(
+	id_lang INT AUTO_INCREMENT,
+	name_lang VARCHAR (255) NOT NULL,
+	valid_lang INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_lang),
+	UNIQUE (name_lang)
+);
+
+-- --------------------------------------------------------------------------
+-- projects
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_projects CASCADE;
+
+CREATE TABLE igoan_projects
+(
+	id_prj INT AUTO_INCREMENT,
+	name_prj VARCHAR (64) NOT NULL,
+	url_prj VARCHAR (255) DEFAULT '',
+	desc_prj VARCHAR (255) NOT NULL,
+	screenshot VARCHAR (64) DEFAULT '',
+	shortname VARCHAR (20) NOT NULL,
+	default_branch INTEGER,
+	date_prj TIMESTAMP NOT NULL,
+	valid_prj INT2 DEFAULT 0 NOT NULL,
+	PRIMARY KEY (id_prj),
+	UNIQUE (shortname)
+);
+
+-- --------------------------------------------------------------------------
+-- admins
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_admins;
+
+CREATE TABLE igoan_admins
+(
+	id_prj INTEGER,
+	id_user INTEGER,
+	is_owner INT2 DEFAULT 0,
+	PRIMARY KEY (id_prj, id_user),
+	FOREIGN KEY (id_prj) REFERENCES igoan_projects ON DELETE CASCADE,
+	FOREIGN KEY (id_user) REFERENCES igoan_users ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------------------------
+-- branches
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_branches CASCADE;
+
+CREATE TABLE igoan_branches
+(
+	id_branch INT AUTO_INCREMENT,
+	name_branch VARCHAR (255) NOT NULL,
+	id_prj INTEGER NOT NULL,
+	date_branch TIMESTAMP NOT NULL,
+	PRIMARY KEY (id_branch),
+	FOREIGN KEY (id_prj) REFERENCES igoan_projects (id_prj) ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------------------------
+-- projects (2)
+-- --------------------------------------------------------------------------
+
+ALTER TABLE igoan_projects
+	ADD CONSTRAINT igoan_projects_FK_idb FOREIGN KEY (default_branch)
+	REFERENCES igoan_branches (id_branch) ON DELETE RESTRICT;
+
+-- --------------------------------------------------------------------------
+-- maintainers
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_maintainers;
+
+CREATE TABLE igoan_maintainers
+(
+	id_branch INTEGER,
+	id_user INTEGER,
+	PRIMARY KEY (id_branch, id_user),
+	FOREIGN KEY (id_branch) REFERENCES igoan_branches ON DELETE CASCADE,
+	FOREIGN KEY (id_user) REFERENCES igoan_users ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------------------------
+-- releases
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_releases CASCADE;
+
+CREATE TABLE igoan_releases
+(
+	id_rel INT AUTO_INCREMENT,
+	name_rel VARCHAR (255) NOT NULL,
+	date_rel TIMESTAMP NOT NULL,
+	status INTEGER DEFAULT 0 NOT NULL CHECK (status >= 0 AND status <= 7),
+	nb_projs INTEGER DEFAULT 0 NOT NULL CHECK (nb_projs >= 0),
+	changes VARCHAR (255) DEFAULT '',
+	download VARCHAR (255) DEFAULT '',
+	valid_rel INT2 DEFAULT 0 NOT NULL,
+	id_branch INTEGER,
+	id_lic INTEGER,
+	PRIMARY KEY (id_rel),
+	UNIQUE (id_branch, name_rel),
+	FOREIGN KEY (id_branch) REFERENCES igoan_branches ON DELETE CASCADE,
+	FOREIGN KEY (id_lic) REFERENCES igoan_licenses ON DELETE RESTRICT
+);
+
+-- --------------------------------------------------------------------------
+-- authors
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_authors;
+
+CREATE TABLE igoan_authors
+(
+	id_user INTEGER,
+	id_rel INTEGER,
+	PRIMARY KEY (id_user, id_rel),
+	FOREIGN KEY (id_user) REFERENCES igoan_users ON DELETE CASCADE,
+	FOREIGN KEY (id_rel) REFERENCES igoan_releases ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------------------------
+-- written
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_written;
+
+CREATE TABLE igoan_written
+(
+	id_rel INTEGER,
+	id_lang INTEGER,
+	PRIMARY KEY (id_rel, id_lang),
+	FOREIGN KEY (id_rel) REFERENCES igoan_releases ON DELETE CASCADE,
+	FOREIGN KEY (id_lang) REFERENCES igoan_languages ON DELETE RESTRICT
+);
+
+-- --------------------------------------------------------------------------
+-- runson
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_runson;
+
+CREATE TABLE igoan_runson
+(
+	id_rel INTEGER,
+	id_pf INTEGER,
+	PRIMARY KEY (id_rel, id_pf),
+	FOREIGN KEY (id_rel) REFERENCES igoan_releases ON DELETE CASCADE,
+	FOREIGN KEY (id_pf) REFERENCES igoan_platforms ON DELETE RESTRICT
+);
+
+-- --------------------------------------------------------------------------
+-- belongsto
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_belongsto;
+
+CREATE TABLE igoan_belongsto
+(
+	id_rel INTEGER,
+	id_cat INTEGER,
+	PRIMARY KEY (id_rel, id_cat),
+	FOREIGN KEY (id_rel) REFERENCES igoan_releases ON DELETE CASCADE,
+	FOREIGN KEY (id_cat) REFERENCES igoan_categories ON DELETE RESTRICT
+);
+
+-- --------------------------------------------------------------------------
+-- admins
+-- --------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS igoan_admins;
+
+CREATE TABLE igoan_admins
+(
+	id_user INTEGER,
+	PRIMARY KEY (id_user),
+	FOREIGN KEY (id_user) REFERENCES igoan_users ON DELETE CASCADE
+);
