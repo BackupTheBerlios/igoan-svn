@@ -95,7 +95,7 @@ if (!empty($_GET['id_rel'])) {
 
 // is the visitor an admin/maintainer ?
 $isadmin = $me && $my_prj->is_admin($me->get_id_user());
-$ismaint = $isadmin || $me && $my_branch->is_maintainer($me->get_id_user());
+$ismaint = $isadmin || $me && $my_branch && $my_branch->is_maintainer($me->get_id_user());
 
 // the branches and releases to show
 $releases = $my_branch
@@ -113,7 +113,7 @@ if ($branches && $my_branch) $d_full_title .= ' ('.$my_branch->get_name_branch()
 
 // SCREENSHOT DIV
 $d_screenshot = ($my_prj->get_screenshot() != "")
-	? '<div class="screenshot"><a href="'.$my_prj->get_screenshot().'"><img src="/minishots/'.$my_prj->get_shortname().'.png" width="150" alt="" /></a></div>'
+	? '<div class="screenshot"><a href="'.REMOTE_PATH.$my_prj->get_screenshot().'"><img src="'.REMOTE_PATH.'/minishots/'.$my_prj->get_shortname().'.png" width="150" alt="" /></a></div>'
 	: '';
 
 // MISC INFOS DIV
@@ -144,19 +144,19 @@ $d_admin = '';
 if ($isadmin || $ismaint) { # FIXME: enlever links
 	$d_admin = '<div class="admin links"><ul>';
 	if ($isadmin) {
-		$d_admin .= '<li> <a href="/project/new_branch.php?id_prj='.$my_prj->get_id_prj().'"> Add a branch </a> </li>';
-		$d_admin .= '<li> <a href="/project/add_user.php?id_prj='.$my_prj->get_id_prj().'"> Add an admin </a> </li>';
-		$d_admin .= '<li> <a href="/project/add_user.php?id_branch='.$my_branch->get_id_branch().'"> Add a maintainer </a> </li>';
+		$d_admin .= '<li> <a href="'.REMOTE_PATH.'/project/new_branch.php?id_prj='.$my_prj->get_id_prj().'"> Add a branch </a> </li>';
+		$d_admin .= '<li> <a href="'.REMOTE_PATH.'/project/add_user.php?id_prj='.$my_prj->get_id_prj().'"> Add an admin </a> </li>';
+		if ($my_branch) $d_admin .= '<li> <a href="'.REMOTE_PATH.'/project/add_user.php?id_branch='.$my_branch->get_id_branch().'"> Add a maintainer </a> </li>';
 	}
 	/*
 	if ($isadmin && $ismaint) {
 		$d_admin .= '<hr/>';
 	}
 	*/
-	if ($ismaint) {
-		$d_admin .= '<li> <a href="/project/new_release.php?id_branch='.$my_branch->get_id_branch().'"> Add a release </a> </li>';
+	if ($ismaint && $my_branch) { // redondant mais on sait jamais
+		$d_admin .= '<li> <a href="'.REMOTE_PATH.'/project/new_release.php?id_branch='.$my_branch->get_id_branch().'"> Add a release </a> </li>';
 		if ($my_rel)
-			$d_admin .= '<li> <a href="/project/add_user.php?id_rel='.$my_rel->get_id_rel().'"> Add an author </a> </li>';
+			$d_admin .= '<li> <a href="'.REMOTE_PATH.'/project/add_user.php?id_rel='.$my_rel->get_id_rel().'"> Add an author </a> </li>';
 	}
 	$d_admin .= '</ul></div>';
 }
@@ -167,18 +167,17 @@ $list = $request->list_authors();
 if ($list) {
 	foreach ($list as $author_id) {
 		$author = user_get_by_id($author_id);
-		if ($author) $d_authors .= ', <a href="/user/view.php?id='.$author->get_id_user().'">'.$author->get_name_user().'</a>';
+		if ($author) $d_authors .= ', <a href="'.REMOTE_PATH.'/user/view.php?id='.$author->get_id_user().'">'.$author->get_name_user().'</a>';
 	}
 	$d_authors = '<dl><dt> Author(s): </dt><dd>'.substr($d_authors, 2).'.</dd></dl>';
 }
 
 // ADMINS LIST (project admins + maintainers)
 $d_admins = '';
-$list = $my_branch->list_admins();
-if ($list) {
+if ($my_branch && $list = $my_branch->list_admins()) {
 	foreach ($list as $tmpid) {
 		$tmp = user_get_by_id($tmpid);
-		if ($tmp) $d_admins .= ', <a href="/user/view.php?id='.$tmp->get_id_user().'">'.$tmp->get_name_user().'</a>';
+		if ($tmp) $d_admins .= ', <a href="'.REMOTE_PATH.'/user/view.php?id='.$tmp->get_id_user().'">'.$tmp->get_name_user().'</a>';
 	}
 	$d_admins = '<dl><dt> Admin(s): </dt><dd>'.substr($d_admins, 2).'.</dd></dl>';
 }
@@ -259,7 +258,7 @@ categories_box();
 		if ($releases) { ?>
 			<div class="historique">
 			<dl>
-				<dt> All releases <?php if ($branches || $isadmin) echo 'for this branch ('.$my_branch->get_name_branch().')'; ?>: </dt>
+				<dt> All releases <?php if ($my_branch && ($branches || $isadmin)) echo 'for this branch ('.$my_branch->get_name_branch().')'; ?>: </dt>
 				<dd>
 					<table>
 						<thead>
@@ -275,7 +274,7 @@ categories_box();
 							if (!$rel) continue;
 							?>
 							<tr>
-								<td> <a href="/project/view.php?id_rel=<?php echo $rel->get_id_rel(); ?>"><?php echo $rel->get_name_rel(); ?></a> </td>
+								<td> <a href="<?php echo REMOTE_PATH; ?>/project/view.php?id_rel=<?php echo $rel->get_id_rel(); ?>"><?php echo $rel->get_name_rel(); ?></a> </td>
 								<td> <?php echo $rel->get_date_rel(); ?> </td>
 								<td> <?php echo $rel->get_changes(); ?> </td>
 							</tr><?php
@@ -309,7 +308,7 @@ categories_box();
 								: 0;
 							?>
 							<tr>
-								<td> <a href="/project/view.php?id_branch=<?php echo $branch->get_id_branch(); ?>"><?php echo $branch->get_name_branch(); ?></a> </td>
+								<td> <a href="<?php echo REMOTE_PATH; ?>/project/view.php?id_branch=<?php echo $branch->get_id_branch(); ?>"><?php echo $branch->get_name_branch(); ?></a> </td>
 								<td> <?php echo $last ? $last->get_name_rel() : '-'; ?> </td>
 								<td> <?php echo $last ? $last->get_date_rel() : '-'; ?> </td><?php
 							?></tr><?php

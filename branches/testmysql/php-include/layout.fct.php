@@ -37,10 +37,10 @@ if ($me) { ?>
 		<h4> Logged as <?php echo $me->get_login(); ?> </h4>
 	<div class="loggued">
 		<p>
-			<a href="/user/view.php" title="Go to my personal page">My personal page</a><br />
-			<a href="/user/edit.php" title="Edit my own informations">Edit my infos</a><br />
-			<!-- <a href="/user/logout.php?referer=<?php echo htmlentities(urlencode($_SERVER['REQUEST_URI'])); ?>" title="Logout">Logout</a><br /> -->
-			<a href="/user/logout.php" title="Logout">Logout</a><br />
+			<a href="<?php echo REMOTE_PATH; ?>/user/view.php" title="Go to my personal page">My personal page</a><br />
+			<a href="<?php echo REMOTE_PATH; ?>/user/edit.php" title="Edit my own informations">Edit my infos</a><br />
+			<!-- <a href="<?php echo REMOTE_PATH; ?>/user/logout.php?referer=<?php echo htmlentities(urlencode($_SERVER['REQUEST_URI'])); ?>" title="Logout">Logout</a><br /> -->
+			<a href="<?php echo REMOTE_PATH; ?>/user/logout.php" title="Logout">Logout</a><br />
 		</p><?php
 $projects_id = $me->list_projects();
 if ($projects_id) {
@@ -48,7 +48,7 @@ if ($projects_id) {
 	foreach ($projects_id as $id_prj) {
 		$prj = project_get_by_id($id_prj);
 		if (!$prj) continue;
-		$my_projects .= '<li><a href="/project/view.php?id_prj='.$prj->get_id_prj().'">'.$prj->get_name_prj().'</a><br />';
+		$my_projects .= '<li><a href="'.REMOTE_PATH.'/project/view.php?id_prj='.$prj->get_id_prj().'">'.$prj->get_name_prj().'</a><br />';
 		$my_projects .= '</li>';
 	}
 	echo $my_projects.'</ul>';
@@ -68,12 +68,12 @@ if ($projects_id) {
 			</li>
 		</ul> -->
 		<p>
-			<a href="/project/new_project.php" title="Register a new project">New project</a>
+			<a href="<?php echo REMOTE_PATH; ?>/project/new_project.php" title="Register a new project">New project</a>
 		</p>
 	</div><?php
 } else { ?>
 	<h4> Login: </h4>
-	<form action="/user/login.php">
+	<form action="<?php echo REMOTE_PATH; ?>/user/login.php">
 	<div>
 		<label for="username"> Username: </label><br />
 		<input title="Your igoan user name." id="username" name="login" type="text" /><br />
@@ -83,7 +83,7 @@ if ($projects_id) {
 		<input type="hidden" name="referer" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
 	</div>
 	</form>
-	<h4><small><a href="/user/new.php">Register</a></small></h4>
+	<h4><small><a href="<?php echo REMOTE_PATH; ?>/user/new.php">Register</a></small></h4>
 <?php	} ?>
 		</div>
 	<br style="clear: both;" />
@@ -137,25 +137,25 @@ echo '<?xml version="1.0" encoding="iso-8859-15"?>';
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
 <title><?php echo $title; ?></title>
-<link rel="stylesheet" title="Igoan - Default Stylesheet" href="/style/default.css"/>
+<link rel="stylesheet" title="Igoan - Default Stylesheet" href="<?php echo REMOTE_PATH; ?>/style/default.css"/>
 </head>
 
 <body id="www_igoan_org" class="add_project">
 
 <div id="header">
-<h1><a href="/"><img src="/images/logo.png" width="300" height="80"
+<h1><a href="<?php echo REMOTE_PATH; ?>/"><img src="<?php echo REMOTE_PATH; ?>/images/logo.png" width="300" height="80"
 alt="Igoan.org" title="Igoan, Free Software Directory Project" /></a></h1>
 
 <div class="menu links">
-<a href="/"><img src="/images/home.png" alt="home" /></a>
-<img src="/images/separator.png" alt=" " />
-<a href="/updates.php"><img src="/images/updates.png" alt="latest updates" /></a>
-<img src="/images/separator.png" alt=" " />
-<a href="/browse.php"><img src="/images/browse.png" alt="browse categories " /></a>
-<img src="/images/separator.png" alt=" " />
-<a href="http://www.cameuh.net/projects/igoan/"><img src="/images/about.png" alt="about " /></a>
-<img src="/images/separator.png" alt=" " />
-<a href="/igoan/contact.php"><img src="/images/contact.png" alt="contact " /></a>
+<a href="<?php echo REMOTE_PATH; ?>/"><img src="<?php echo REMOTE_PATH; ?>/images/home.png" alt="home" /></a>
+<img src="<?php echo REMOTE_PATH; ?>/images/separator.png" alt=" " />
+<a href="<?php echo REMOTE_PATH; ?>/updates.php"><img src="<?php echo REMOTE_PATH; ?>/images/updates.png" alt="latest updates" /></a>
+<img src="<?php echo REMOTE_PATH; ?>/images/separator.png" alt=" " />
+<a href="<?php echo REMOTE_PATH; ?>/browse.php"><img src="<?php echo REMOTE_PATH; ?>/images/browse.png" alt="browse categories " /></a>
+<img src="<?php echo REMOTE_PATH; ?>/images/separator.png" alt=" " />
+<a href="http://www.cameuh.net/projects/igoan/"><img src="<?php echo REMOTE_PATH; ?>/images/about.png" alt="about " /></a>
+<img src="<?php echo REMOTE_PATH; ?>/images/separator.png" alt=" " />
+<a href="<?php echo REMOTE_PATH; ?>/igoan/contact.php"><img src="<?php echo REMOTE_PATH; ?>/images/contact.png" alt="contact " /></a>
 </div>
 <br style="clear: both;" />
 </div><?php
@@ -168,6 +168,7 @@ database)<br/>
 &copy; Igoan 2003-2005 - <a href="http://validator.w3.org/check/referer">check
 xhtml</a>
 </div>
+<?php if (!empty($queries)) echo '<div>'.$queries.'</div>'; ?>
 </body>
 </html><?php
 }

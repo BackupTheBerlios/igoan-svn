@@ -107,7 +107,7 @@ categories_box();
 			</p>
 			<hr/>
 			<p>
-			<a href="/user/chpass.php">Change your password</a>
+			<a href="<?php echo REMOTE_PATH; ?>/user/chpass.php">Change your password</a>
 			</p>
 		</div>
 	</div>

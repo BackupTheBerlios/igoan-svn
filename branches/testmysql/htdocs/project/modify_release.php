@@ -177,4 +177,4 @@ if (isset($_GET['action']) && ($_GET['action'] == 'Apply')) {
 
 <pre>&lt;!-- toujours 3 vierges serait une bonne moyenne ? --&gt;</pre>
 <br /><br/><hr />
-<a href="/project/view_project.php?idPrj=456789">Back to project view</a> || <a href="/user/view_user.php">Back to user page</a> || <a href="/">Back to homepage</a>
+<a href="<?php echo REMOTE_PATH; ?>/project/view_project.php?idPrj=456789">Back to project view</a> || <a href="<?php echo REMOTE_PATH; ?>/user/view_user.php">Back to user page</a> || <a href="<?php echo REMOTE_PATH; ?>/">Back to homepage</a>

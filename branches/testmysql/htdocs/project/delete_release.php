@@ -48,4 +48,5 @@ Do you really want to delete this release 'GraphTool' version 'graphtool-0.2-pre
 	<input type="hidden" name="idRel" value="123460" /></form>
 	
 <br /><br/><hr />
-<a href="/project/view_project.php?idPrj=456789">Back to project view</a> || <a href="/">Back to homepage</a>
+<a href="<?php echo REMOTE_PATH; ?>/project/view_project.php?idPrj=456789">Back
+to project view</a> || <a href="<?php echo REMOTE_PATH; ?>/">Back to homepage</a>

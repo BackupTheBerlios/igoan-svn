@@ -142,12 +142,12 @@ if ($me)
 {
 	echo '<p> You are currently logged in as ' . $me->get_name_user();
 	echo '.<br />You can proceed to the next step as this user,';
-	echo ' or <a href="/user/logout.php?referer=/project/new_project.php">logout</a> in order to register/login as a another user.</p>';
+	echo ' or <a href="'.REMOTE_PATH.'/user/logout.php?referer=/project/new_project.php">logout</a> in order to register/login as a another user.</p>';
 }
 else
 {
 	echo '<p> If you already have an account, enter your login/password in the fields below. <br />';
-	echo 'If you don\'t, please <a href="/user/new.php">register</a>. </p>';
+	echo 'If you don\'t, please <a href="'.REMOTE_PATH.'/user/new.php">register</a>. </p>';
 	echo '<div class="block">';
 	echo '<label for="login"> Login: </label>';
 	echo '<input title="Your igoan login." id="login" name="login" type="text" value="'.(!empty($_GET['login'])?$_GET['login']:"").'"/>';

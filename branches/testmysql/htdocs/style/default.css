@@ -377,7 +377,7 @@ a:hover
 .error
 {
 	padding-left: 60px;
-	background-image: url(/images/stop.png);
+	background-image: url(../images/stop.png);
 	/*
   	   si on met l'image, ne pas oublier de dire qu'elle vient de gnome.
        http://jimmac.musichall.cz/ikony.php3

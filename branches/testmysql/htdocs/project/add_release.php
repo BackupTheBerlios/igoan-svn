@@ -214,4 +214,6 @@ if (isset($_GET['action']) && ($_GET['action'] == 'Submit')) {
 </form>
 
 <br /><br/><hr />
-<a href="/project/view.php?idPrj=456789">Back to project view</a> || <a href="/user/view_user.php">Back to user page</a> || <a href="/">Back to homepage</a>
+<a href="<?php echo REMOTE_PATH; ?>/project/view.php?idPrj=456789">Back to project
+view</a> || <a href="<?php echo REMOTE_PATH; ?>/user/view_user.php">Back to user
+page</a> || <a href="<?php echo REMOTE_PATH; ?>/">Back to homepage</a>

@@ -25,7 +25,7 @@
 <?php
 
 function http_redir($str) {
-	header('Location: http://'.$_SERVER['SERVER_NAME'].$str);
+	header('Location: http://'.$_SERVER['SERVER_NAME'].REMOTE_PATH.$str);
 	exit;
 }
 

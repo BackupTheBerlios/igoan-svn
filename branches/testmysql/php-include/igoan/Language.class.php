@@ -58,7 +58,7 @@ class Language
 	}
 	function delete()
 	{
-		sql_do('DELETE FROM languages WHERE id_lang=\''.int($this->get_id_lang()).'\'');
+		sql_do('DELETE FROM '.DB_PREF.'_languages WHERE id_lang=\''.int($this->get_id_lang()).'\'');
 	}
 #  function dumpXML()
 #  {
@@ -81,7 +81,7 @@ class Language
 
 function language_get_by_id($id)
 {
-	$result = sql_do('SELECT id_lang,name_lang,valid_lang FROM languages WHERE id_lang=\''.int($id).'\'');
+	$result = sql_do('SELECT id_lang,name_lang,valid_lang FROM '.DB_PREF.'_languages WHERE id_lang=\''.int($id).'\'');
 
 	if ($result->numRows() != 1) {
 		return (0);
@@ -97,16 +97,15 @@ function language_get_by_id($id)
 
 function language_new($nom)
 {
-	$id_lang = pick_id('languages_id_lang_seq');
 	try {
-		sql_do('INSERT INTO languages (id_lang,name_lang) VALUES ('.int($id_lang).',\''.str($nom).'\')');
+		sql_do('INSERT INTO '.DB_PREF.'_languages (name_lang) VALUES (\''.str($nom).'\')');
 	} catch (DatabaseException $e) {
 		return 0;
 	}
-	return $id_lang;
+	return sql_last_id();
 }
 
 function language_list()
 {
-	return get_array_by_query('SELECT id_lang,name_lang FROM languages ORDER BY name_lang');
+	return get_array_by_query('SELECT id_lang,name_lang FROM '.DB_PREF.'_languages ORDER BY name_lang');
 }

@@ -27,7 +27,7 @@ require_once 'igoan/Project.class.php';
 require_once 'igoan/User.class.php';
 
 $me = user_get_by_id($_SESSION['id']);
-$result = sql_do('SELECT id_prj FROM projects ORDER BY id_prj DESC');
+$result = sql_do('SELECT id_prj FROM '.DB_PREF.'_projects ORDER BY id_prj DESC');
 
 // show the data (NO PROCESSING HERE PLEASE, ONLY ECHOs)
 header_box('Igoan :: The Free Directory Project');
@@ -51,7 +51,7 @@ if (($result->numRows() == 0)) {
 } else for ($i=0; $i<$result->numRows(); $i++) {
 	$row = $result->fetchRow();
 	$prj = project_get_by_id($row[0]);
-	echo '<li><a href="/project/view.php?id_prj='.$prj->get_id_prj().'">'.$prj->get_name_prj().'</a></li>';
+	echo '<li><a href="'.REMOTE_PATH.'/project/view.php?id_prj='.$prj->get_id_prj().'">'.$prj->get_name_prj().'</a></li>';
 }
 ?>
 </ul>

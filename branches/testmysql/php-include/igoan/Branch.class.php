@@ -71,48 +71,48 @@ class Branch
 	}
 	function add_maintainer($id_user)
 	{
-		sql_do('INSERT INTO maintainers (id_branch,id_user) VALUES (\''.int($this->get_id_branch()).'\',\''.int($id_user).'\')');
+		sql_do('INSERT INTO '.DB_PREF.'_maintainers (id_branch,id_user) VALUES (\''.int($this->get_id_branch()).'\',\''.int($id_user).'\')');
 	}
 	function del_maintainer($id_user)
 	{
-		sql_do('DELETE FROM maintainers WHERE id_branch=\''.int($this->get_id_branch()).'\' AND id_user=\''.int($id_user).'\'');
+		sql_do('DELETE FROM '.DB_PREF.'_maintainers WHERE id_branch=\''.int($this->get_id_branch()).'\' AND id_user=\''.int($id_user).'\'');
 	}
 	function is_maintainer($id_user)
 	{
-		$dummy = sql_do("SELECT id_user FROM maintainers WHERE id_user='".int($id_user)."' AND id_branch='".int($this->get_id_branch())."'");
+		$dummy = sql_do('SELECT id_user FROM '.DB_PREF.'_maintainers WHERE id_user=\''.int($id_user).'\' AND id_branch=\''.int($this->get_id_branch()).'\'');
 		return ($dummy->numRows() > 0);
 	}
 	function list_authors()
 	{
-		return get_array_by_query("SELECT distinct(id_user) FROM authors JOIN releases USING (id_rel) WHERE id_branch='".int($this->get_id_branch())."'");
+		return get_array_by_query('SELECT distinct(id_user) FROM '.DB_PREF.'_authors JOIN '.DB_PREF.'_releases USING (id_rel) WHERE id_branch=\''.int($this->get_id_branch()).'\'');
 	}
 	function list_platforms()
 	{
-		return get_array_by_query("SELECT distinct(id_pf) FROM runson JOIN releases USING (id_rel) WHERE id_branch='".int($this->get_id_branch())."'");
+		return get_array_by_query('SELECT distinct(id_pf) FROM '.DB_PREF.'_runson JOIN '.DB_PREF.'_releases USING (id_rel) WHERE id_branch=\''.int($this->get_id_branch()).'\'');
 	}
 	function list_languages()
 	{
-		return get_array_by_query("SELECT distinct(id_lang) FROM written JOIN releases USING (id_rel) WHERE id_branch='".int($this->get_id_branch())."'");
+		return get_array_by_query('SELECT distinct(id_lang) FROM '.DB_PREF.'_written JOIN '.DB_PREF.'_releases USING (id_rel) WHERE id_branch=\''.int($this->get_id_branch()).'\'');
 	}
 	function list_categories()
 	{
-		return get_array_by_query("SELECT distinct(id_cat) FROM belongsto JOIN releases USING (id_rel) WHERE id_branch='".int($this->get_id_branch())."'");
+		return get_array_by_query('SELECT distinct(id_cat) FROM '.DB_PREF.'_belongsto JOIN '.DB_PREF.'_releases USING (id_rel) WHERE id_branch=\''.int($this->get_id_branch()).'\'');
 	}
 	function list_maintainers()
 	{
-		return (get_array_by_query("SELECT id_user FROM maintainers WHERE id_branch='".int($this->get_id_branch())."'"));
+		return (get_array_by_query('SELECT id_user FROM '.DB_PREF.'_maintainers WHERE id_branch=\''.int($this->get_id_branch()).'\''));
 	}
 	function list_admins()
 	{
-	  return get_array_by_query("SELECT id_user FROM maintainers WHERE id_branch='".int($this->get_id_branch())."' UNION SELECT id_user FROM admins JOIN projects USING (id_prj) JOIN branches USING (id_prj) WHERE id_branch='".int($this->get_id_branch())."'");
+	  return get_array_by_query('SELECT id_user FROM '.DB_PREF.'_maintainers WHERE id_branch=\''.int($this->get_id_branch()).'\' UNION SELECT id_user FROM '.DB_PREF.'_admins JOIN '.DB_PREF.'_projects USING (id_prj) JOIN '.DB_PREF.'_branches USING (id_prj) WHERE id_branch=\''.int($this->get_id_branch()).'\'');
 	}
 	function list_releases($except_rel=0)
 	{
-		return (get_array_by_query('SELECT id_rel FROM releases WHERE id_branch=\''.int($this->get_id_branch()).'\' AND id_rel<>'.int($except_rel).' ORDER BY date_rel DESC'));
+		return (get_array_by_query('SELECT id_rel FROM '.DB_PREF.'_releases WHERE id_branch=\''.int($this->get_id_branch()).'\' AND id_rel<>'.int($except_rel).' ORDER BY date_rel DESC'));
 	}
 	function get_last_release()
 	{
-		$result = sql_do('SELECT id_rel FROM releases WHERE date_rel like (SELECT max(date_rel) FROM releases) AND id_branch=\''.int($this->get_id_branch()).'\'');
+		$result = sql_do('SELECT id_rel FROM '.DB_PREF.'_releases WHERE id_branch=\''.int($this->get_id_branch()).'\' ORDER BY date_rel DESC LIMIT 1');
 		if ($result->numRows() == 0)
 			return (0);
 		else {
@@ -124,7 +124,7 @@ class Branch
 
 function branch_get_by_id($id_branch)
 {
-	$result = sql_do('SELECT id_branch,name_branch,id_prj,date_branch FROM branches WHERE id_branch=\''.int($id_branch).'\'');
+	$result = sql_do('SELECT id_branch,name_branch,id_prj,date_branch FROM '.DB_PREF.'_branches WHERE id_branch=\''.int($id_branch).'\'');
 	if ($result->numRows() != 1) {
 		return (0);
 	}
@@ -140,12 +140,10 @@ function branch_get_by_id($id_branch)
 
 function branch_new($name, $id_prj)
 {
-	$id_branch = pick_id('branches_id_branch_seq');
-
 	try {
-		sql_do('INSERT INTO branches (id_branch,name_branch,id_prj,date_branch) VALUES (\''.int($id_branch).'\',\''.str($name).'\',\''.int($id_prj).'\',\''.date('Y-m-d H:i:s').'\')');
+		sql_do('INSERT INTO '.DB_PREF.'_branches (name_branch,id_prj,date_branch) VALUES (\''.str($name).'\',\''.int($id_prj).'\',\''.date('Y-m-d H:i:s').'\')');
 	} catch (DatabaseException $e) {
 		return (0);
 	}
-	return ($id_branch);
+	return sql_last_id();
 }

@@ -34,14 +34,22 @@ class Result
 	}
 	function numRows()
 	{
-		return pg_num_rows($this->result);
+		if (IFPG) return pg_num_rows($this->result);
+		if (IFMY) return mysql_num_rows($this->result);
 	}
 	function numCols()
 	{
-		return pg_num_fields($this->result);
+		if (IFPG) return pg_num_fields($this->result);
+		if (IFMY) return mysql_num_fields($this->result);
 	}
 	function fetchRow()
 	{
-		return pg_fetch_row($this->result);
+		if (IFPG) return pg_fetch_row($this->result);
+		if (IFMY) return mysql_fetch_row($this->result);
+	}
+	function fetchOne()
+	{
+		if (IFPG) return pg_fetch_result($this->result, 0, 0);
+		if (IFMY) return mysql_result($this->result, 0);
 	}
 }

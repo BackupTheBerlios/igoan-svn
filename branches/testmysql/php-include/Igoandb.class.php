@@ -24,21 +24,26 @@
 ?>
 <?php
 
+define ('IFPG', DB_TYPE == 'pgsql');
+define ('IFMY', DB_TYPE == 'mysql');
 require 'Result.class.php';
 
 final class Igoandb
 {
 	private $db;
+	private $type;
 
 	function __construct()
 	{
-		require 'db.php';
+		# now done in prepend.php
+		#require 'db.php';
 	}
 	function __destruct()
 	{
 		if ($this->is_connected()) {
 			$this->query('ROLLBACK');
-			pg_close($this->db);
+			IFPG and pg_close($this->db);
+			IFMY and mysql_close($this->db);
 		}
 	}
 	protected function is_connected()
@@ -46,14 +51,16 @@ final class Igoandb
 		if (!$this->db) {
 			return false;
 		}
-		if (pg_connection_status($this->db) != PGSQL_CONNECTION_OK) {
-			return false;
-		}
+		if (IFPG and (pg_connection_status($this->db) != PGSQL_CONNECTION_OK)) return false;
+		if (IFMY) return mysql_ping($this->db);
+		return true;
 	}
 	protected function connect()
 	{
 		if (!$this->is_connected()) {
-			$this->db = pg_connect('host='.DB_HOST.' user='.DB_USER.' password='.DB_PASS.' port='.DB_PORT.' dbname='.DB_BASE);
+			IFPG and $this->db = pg_connect('host='.DB_HOST.' user='.DB_USER.' password='.DB_PASS.' port='.DB_PORT.' dbname='.DB_BASE);
+			IFMY and $this->db = mysql_connect(DB_HOST.':'.DB_PORT, DB_USER, DB_PASS);
+			IFMY and mysql_select_db(DB_BASE);
 			if (!$this->db) {
 				throw new DatabaseException('Unable to connect to database'.pg_last_error());
 			}
@@ -62,7 +69,8 @@ final class Igoandb
 	function query($sql)
 	{
 		$this->connect();
-		$result = pg_query($this->db, $sql);
+		IFPG and $result = pg_query($this->db, $sql);
+		IFMY and $result = mysql_query($sql, $this->db);
 		if (!$result) {
 			throw new DatabaseException('Unable to query database with "'.$sql.'"'); //: "'.pg_last_error($this->db));
 		}

@@ -28,6 +28,7 @@
 require_once 'divers.fct.php';
 
 $short = 'Fatal Error';
+$long = 'There is no error to display!';
 if (!empty($_GET['code'])) switch ($_GET['code']) {
 case '404':
 	$short = 'Error 404 : Not Found';
@@ -58,7 +59,7 @@ header_box('Igoan :: '.$short);
 	} ?>
 	<p>
 	You can <script type="text/javascript">document.write('<a href="javascript:history.back()">browse back</a> or ');</script> go to
-	the <a href="/index.php">main page</a>.
+	the <a href="<?php echo REMOTE_PATH; ?>/index.php">main page</a>.
 	</p>
 	</div>
 </div>

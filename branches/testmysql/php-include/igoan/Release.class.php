@@ -122,29 +122,29 @@ class Release
         }
 	function add_author($id_user)
 	{
-		sql_do('INSERT INTO authors (id_user,id_rel) VALUES (\''.int($id_user).'\',\''.int($this->get_id_rel()).'\')');
+		sql_do('INSERT INTO '.DB_PREF.'_authors (id_user,id_rel) VALUES (\''.int($id_user).'\',\''.int($this->get_id_rel()).'\')');
 	}
 	function list_authors()
 	{
-		return (get_array_by_query('SELECT id_user FROM authors WHERE id_rel=\''.int($this->get_id_rel()).'\''));
+		return (get_array_by_query('SELECT id_user FROM '.DB_PREF.'_authors WHERE id_rel=\''.int($this->get_id_rel()).'\''));
 	}
 	function list_platforms()
 	{
-		return get_array_by_query('SELECT id_pf FROM runson WHERE id_rel=\''.int($this->get_id_rel()).'\'');
+		return get_array_by_query('SELECT id_pf FROM '.DB_PREF.'_runson WHERE id_rel=\''.int($this->get_id_rel()).'\'');
 	}
 	function list_languages()
 	{
-		return get_array_by_query('SELECT id_lang FROM written WHERE id_rel=\''.int($this->get_id_rel()).'\'');
+		return get_array_by_query('SELECT id_lang FROM '.DB_PREF.'_written WHERE id_rel=\''.int($this->get_id_rel()).'\'');
 	}
 	function list_categories()
 	{
-		return get_array_by_query('SELECT id_cat FROM belongsto WHERE id_rel=\''.int($this->get_id_rel()).'\'');
+		return get_array_by_query('SELECT id_cat FROM '.DB_PREF.'_belongsto WHERE id_rel=\''.int($this->get_id_rel()).'\'');
 	}
 }
 
 function release_get_by_id($id_rel)
 {
-	$result = sql_do('SELECT id_rel,name_rel,date_rel,status,nb_projs,changes,download,valid_rel,id_branch,id_lic FROM releases WHERE id_rel=\''.int($id_rel).'\'');
+	$result = sql_do('SELECT id_rel,name_rel,date_rel,status,nb_projs,changes,download,valid_rel,id_branch,id_lic FROM '.DB_PREF.'_releases WHERE id_rel=\''.int($id_rel).'\'');
 	if ($result->numRows() != 1) {
 		return (0);
 	}
@@ -166,14 +166,13 @@ function release_get_by_id($id_rel)
 
 function release_new($id_branch, $name_rel, $status, $changes, $download, $valid_rel)
 {
-	$id_rel = pick_id('releases_id_rel_seq');
 	try {
-		$result = sql_do('INSERT INTO releases (id_rel,name_rel,date_rel,status,nb_projs,changes,download,valid_rel) VALUES (\''.int($id_rel).'\',\''.str($name_rel).'\',\''.date('Y-m-d H:i:s').'\',\''.int($status).'\',\''.int($nb_projs).'\',\''.str($changes).'\',\''.str($download).'\',\''.(bool)int($valid_rel).'\')');
+		$result = sql_do('INSERT INTO '.DB_PREF.'_releases (name_rel,date_rel,status,nb_projs,changes,download,valid_rel) VALUES (\''.str($name_rel).'\',\''.date('Y-m-d H:i:s').'\',\''.int($status).'\',\''.int($nb_projs).'\',\''.str($changes).'\',\''.str($download).'\',\''.(bool)int($valid_rel).'\')');
 	} catch (DatabaseException $e) {
 		return 0;
 	}
 
-	return ($id_rel);
+	return sql_last_id();
 }
 
 $release_status = array (

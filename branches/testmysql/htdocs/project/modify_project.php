@@ -27,7 +27,7 @@
 // existence du projet
 if (!isset($_GET['idPrj']) || ($_GET['idPrj'] != 456789)) {
 	echo 'Bad Project ID<br />';
-	echo '<a href="/user/index.php">Back to user configuration</a> || <a href="/index.php">Back home</a>';
+	echo '<a href="'.REMOTE_PATH.'/user/index.php">Back to user configuration</a> || <a href="'.REMOTE_PATH.'/index.php">Back home</a>';
 	exit;
 }
 
@@ -61,7 +61,7 @@ if (!isset($_GET['description']) || !isset($_GET['homepage']) || !isset($_GET['s
 <input type="text" name="byid" /><input type="submit" value="Add" />
 </form>
 
-<a href="/user/add_user.php">Add a new user</a>
+<a href="<?php echo REMOTE_PATH; ?>/user/add_user.php">Add a new user</a>
 
 <?php } else { 
 	flush_errors();
@@ -87,4 +87,4 @@ creation and visual edition of any kind of graph written in Python.</textarea></
 }
 ?>
 <br /><br/><hr />
-<a href="/project/view_project.php?idPrj=456789">Back to project view</a> || <a href="/user/view_user.php">Back to user page</a> || <a href="/">Back to homepage</a>
+<a href="<?php echo REMOTE_PATH; ?>/project/view_project.php?idPrj=456789">Back to project view</a> || <a href="<?php echo REMOTE_PATH; ?>/user/view_user.php">Back to user page</a> || <a href="<?php echo REMOTE_PATH; ?>/">Back to homepage</a>

@@ -76,7 +76,7 @@ if ($list) {
         $version = '-';
         $date = '-';
       }
-      $d_myprj .= '<tr><td><a href="/project/view.php?id_prj='.$tmp->get_id_prj().'">'.$tmp->get_name_prj().'</a></td><td>'.$version.'</td><td>'.$date.'</td><td>'.(($tmp->get_owner()==$requested->get_id_user())?'Owner':'').'</td></tr>';
+      $d_myprj .= '<tr><td><a href="'.REMOTE_PATH.'/project/view.php?id_prj='.$tmp->get_id_prj().'">'.$tmp->get_name_prj().'</a></td><td>'.$version.'</td><td>'.$date.'</td><td>'.(($tmp->get_owner()==$requested->get_id_user())?'Owner':'').'</td></tr>';
     }
   }
   $d_myprj = '<div class="historique"><dl><dt> Projects managed by '.$requested->get_name_user().': </dt>'
@@ -95,17 +95,17 @@ if ($list) {
     if ($tmp) {
       $relid = $tmp->get_last_release();
       if ($relid) {
-	$rel = release_get_by_id($relid);
-	if ($rel) {
-	  $version = $rel->get_name_rel();
-	  $date = $rel->get_date_rel();
-	  $prj = project_get_by_id($tmp->get_id_prj());
-	  // FIXME: no verification on $prj
-	} else {
-	  $version = '-';
-	  $date = '-';
-	}
-	$d_mybranches .= '<tr><td><a href="/project/view.php?id_branch='.$tmp->get_id_branch().'">'.$prj->get_name_prj().'</a></td><td><a href="/project/view.php?id_branch='.$tmp->get_id_branch().'">'.$tmp->get_name_branch().'</a></td><td>'.$version.'</td><td>'.$date.'</td></tr>';
+        $rel = release_get_by_id($relid);
+        if ($rel) {
+          $version = $rel->get_name_rel();
+          $date = $rel->get_date_rel();
+          $prj = project_get_by_id($tmp->get_id_prj());
+          // FIXME: no verification on $prj
+        } else {
+          $version = '-';
+          $date = '-';
+        }
+        $d_mybranches .= '<tr><td><a href="'.REMOTE_PATH.'/project/view.php?id_branch='.$tmp->get_id_branch().'">'.$prj->get_name_prj().'</a></td><td><a href="'.REMOTE_PATH.'/project/view.php?id_branch='.$tmp->get_id_branch().'">'.$tmp->get_name_branch().'</a></td><td>'.$version.'</td><td>'.$date.'</td></tr>';
       }
     }
   }
@@ -129,7 +129,7 @@ if ($list) {
       if ($b) {
 	$prj = project_get_by_id($b->get_id_prj());
 	if ($prj) {
-	  $d_myrel .= '<tr><td><a href="/project/view.php?id_rel='.$rel->get_id_rel().'">'.$prj->get_name_prj().' ('.$b->get_name_branch().') '.$version.'</a></td><td>'.$date.'</td></tr>';
+	  $d_myrel .= '<tr><td><a href="'.REMOTE_PATH.'/project/view.php?id_rel='.$rel->get_id_rel().'">'.$prj->get_name_prj().' ('.$b->get_name_branch().') '.$version.'</a></td><td>'.$date.'</td></tr>';
 	}
       }
     }
@@ -162,11 +162,11 @@ header_box('Igoan :: View User :: ' . $requested->get_name_user());
 			<?php 
 				if (!$requested->get_photo())
 				{
-					echo '<img src="/images/gnome-screenshot.png" title="This user did not submit a photo." alt="No photo" />';
+					echo '<img src="'.REMOTE_PATH.'/images/gnome-screenshot.png" title="This user did not submit a photo." alt="No photo" />';
 				}
 				else
 				{
-					echo '<img src="/photos/'.$requested->get_login().'/1.png" alt="'.$requested->get_name_user().'\'s Photo" title="'.$requested->get_name_user().'" />';
+					echo '<img src="'.REMOTE_PATH.'/photos/'.$requested->get_login().'/1.png" alt="'.$requested->get_name_user().'\'s Photo" title="'.$requested->get_name_user().'" />';
 				}
 			?>
 			</div>
@@ -183,7 +183,7 @@ header_box('Igoan :: View User :: ' . $requested->get_name_user());
 					<ul>
 						<?php
 							if ($requested->get_url_user() != '')
-								echo '<li><a href="' . $requested->get_url_user() . '">homepage</a></li>';
+								echo '<li><a href="'.REMOTE_PATH. $requested->get_url_user() . '">homepage</a></li>';
 							if ($requested->get_mail() != '')
 								echo '<li><a href="mailto:' . $requested->get_mail() . '">e-mail</a></li>';
 						?>
@@ -209,7 +209,7 @@ header_box('Igoan :: View User :: ' . $requested->get_name_user());
 		echo $d_myprj;
                 echo $d_mybranches;
                 echo $d_myrel; ?>
-		<br style="clear: both" />	
+		<br style="clear: both" />
 	</div>
 	<br style="clear: both" />
 </div>

@@ -33,6 +33,9 @@ if (!empty($_GET)) foreach ($_GET as $key => $value) {
 }
 
 // config PHP local
+define('LOCAL_HTDOCS', '/home/cam/Dev/Igoan/igoan/branches/testmysql/htdocs');
+define('REMOTE_PATH', '/igoan');
+require_once 'db.php';
 ini_set('session.use_cookies', 1);
 #if (ereg("igoan.org", $_SERVER['SERVER_NAME'])) {
 #	ini_set('session.save_path', '/data/www/org/n/a/igoan.org/a/t/beta/tmp');
