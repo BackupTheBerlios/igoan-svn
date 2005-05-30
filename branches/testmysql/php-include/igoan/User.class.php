@@ -144,12 +144,12 @@ class User
 	}
 	function validate()
 	{
-		sql_do('UPDATE users SET valid_user=\'1\' WHERE id_user=\''.int($this->get_id_user()).'\'');
+		sql_do('UPDATE '.DB_PREF.'_users SET valid_user=\'1\' WHERE id_user=\''.int($this->get_id_user()).'\'');
 		$this->set_valid_user(1);
 	}
 	function write()
 	{
-		sql_do('UPDATE users SET name_user=\''.str($this->get_name_user()).'\',mail=\''.str($this->get_mail()).
+		sql_do('UPDATE '.DB_PREF.'_users SET name_user=\''.str($this->get_name_user()).'\',mail=\''.str($this->get_mail()).
 		       '\',url_user=\''.str($this->get_url_user()).'\',passwd=\''.str($this->get_passwd()).
 		       '\',desc_user=\''.str($this->get_desc_user()).
 		       '\' WHERE id_user=\''.int($this->get_id_user()).'\'');

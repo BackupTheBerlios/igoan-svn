@@ -127,14 +127,14 @@ class Project
 	function validate()
 	{
 		if (!$this->get_valid_prj()) {
-			sql_do('UPDATE projects SET valid_prj=\'1\' WHERE id_prj=\''.int($this->get_id_prj()).'\'');
+			sql_do('UPDATE '.DB_PREF.'_projects SET valid_prj=\'1\' WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 			$this->set_valid_prj(1);
 		}
 	}
 	// FIXME: owner not implemented
 	function write()
 	{
-		sql_do('UPDATE projects SET name_prj=\''.str($this->get_name_prj()).'\',url_prj=\''.str($this->get_url_prj()).
+		sql_do('UPDATE '.DB_PREF.'_projects SET name_prj=\''.str($this->get_name_prj()).'\',url_prj=\''.str($this->get_url_prj()).
 			'\',desc_prj=\''.str($this->get_desc_prj()).'\',screenshot=\''.str($this->get_screenshot()).
 			'\',default_branch=\''.int($this->get_default_branch()).'\' WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 		$this->validate();

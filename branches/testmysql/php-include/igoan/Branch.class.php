@@ -67,7 +67,7 @@ class Branch
 	}
 	function write()
 	{
-		sql_do('UPDATE branches SET name_branch=\''.int($this->get_name_branch()).' WHERE id_branch=\''.int($this->get_id_branch()).'\'');
+		sql_do('UPDATE '.DB_PREF.'_branches SET name_branch=\''.int($this->get_name_branch()).' WHERE id_branch=\''.int($this->get_id_branch()).'\'');
 	}
 	function add_maintainer($id_user)
 	{
