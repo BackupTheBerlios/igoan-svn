@@ -283,12 +283,12 @@ CREATE TABLE igoan_belongsto
 );
 
 -- --------------------------------------------------------------------------
--- admins
+-- adminers
 -- --------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS igoan_admins;
+DROP TABLE IF EXISTS igoan_adminers;
 
-CREATE TABLE igoan_admins
+CREATE TABLE igoan_adminers
 (
 	id_user INTEGER,
 	PRIMARY KEY (id_user),
