@@ -139,7 +139,7 @@ class User
 	}
 	function is_global_admin()
 	{
-		$result = sql_do('SELECT id_user FROM '.DB_PREF.'_igoan_admins WHERE id_user=\''.int($this->get_id_user()).'\'');
+		$result = sql_do('SELECT id_user FROM '.DB_PREF.'_adminers WHERE id_user=\''.int($this->get_id_user()).'\'');
 		return ($result->numRows() > 0);
 	}
 	function validate()
