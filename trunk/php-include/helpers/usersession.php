@@ -4,6 +4,8 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
+# $Id: error.fct.php,v 1.1.1.1 2005/01/03 01:58:55 cam Exp $
+#
 # This file is part of the Igoan project.
 #
 # Igoan is free software; you can redistribute it and/or modify
@@ -21,19 +23,9 @@
 #
 ?>
 <?php
-
-	ini_set('session.use_cookies', 1);
-	
-	define ('IGOAN_SECTION_PATH', dirname(__FILE__) . '/sections/');
-	define ('IGOAN_SMARTY_PATH',  dirname(__FILE__) . '/smarty/');
-	define('SMARTY_DIR', "/home/cam/public_html/igoan/www/Smarty/");
-	
-	require_once dirname(__FILE__) . '/helpers/stripslashes.php';
-	require_once dirname(__FILE__) . '/helpers/usersession.php';
-	require_once dirname(__FILE__) . '/helpers/divers.fct.php';
-	require_once dirname(__FILE__) . '/helpers/error.fct.php';
-	require_once dirname(__FILE__) . '/config/db.php';
-	require_once dirname(__FILE__) . '/config/smarty.php';
-	require_once dirname(__FILE__) . '/db/Igoandb.class.php';
-	$igoandb = new Igoandb();
+session_start();
+if (!isset($_SESSION['id']))
+        $_SESSION['id'] = 0;
+if (!isset($_SESSION['error']))
+        $_SESSION['error'] = '';
 ?>

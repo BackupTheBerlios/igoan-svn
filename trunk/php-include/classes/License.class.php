@@ -24,8 +24,6 @@
 ?>
 <?php
 
-require_once 'PEAR.php';
-
 class License
 {
 	// private
@@ -60,7 +58,7 @@ class License
 	}
 	function delete()
 	{
-		sql_do('DELETE FROM licenses WHERE id_lic=\''.int($this->get_id_lic()).'\'');
+		sql_do('DELETE FROM '.DB_PREF.'_licenses WHERE id_lic=\''.int($this->get_id_lic()).'\'');
 	}
 #  function dumpXML()
 #  {
@@ -83,7 +81,7 @@ class License
 
 function license_get_by_id($id)
 {
-	$result = sql_do('SELECT id_lic,name_lic,valid_lic FROM licenses WHERE id_lic=\''.int($id).'\'');
+	$result = sql_do('SELECT id_lic,name_lic,valid_lic FROM '.DB_PREF.'_licenses WHERE id_lic=\''.int($id).'\'');
 
 	if ($result->numRows() != 1) {
 		return (0);
@@ -99,16 +97,15 @@ function license_get_by_id($id)
 
 function license_new($nom, $term)
 {
-	$id_lic = pick_id('licenses_id_lic_seq');
 	try {
-		sql_do('INSERT INTO licenses (id_lic,name_lic,terms) VALUES (\''.int($id_lic).'\',\''.str($nom).'\',\''.str($term).'\')');
+		sql_do('INSERT INTO '.DB_PREF.'_licenses (name_lic,terms) VALUES (\''.str($nom).'\',\''.str($term).'\')');
 	} catch (DatabaseException $e) {
 		return 0;
 	}
-	return $id_lic;
+	return sql_last_id();
 }
 
 function license_list()
 {
-	return get_array_by_query('SELECT id_lic,name_lic,terms FROM licenses ORDER BY name_lic');
+	return get_array_by_query('SELECT id_lic,name_lic,terms FROM '.DB_PREF.'_licenses ORDER BY name_lic');
 }

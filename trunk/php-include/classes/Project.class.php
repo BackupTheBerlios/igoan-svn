@@ -127,61 +127,61 @@ class Project
 	function validate()
 	{
 		if (!$this->get_valid_prj()) {
-			sql_do('UPDATE projects SET valid_prj=\'1\' WHERE id_prj=\''.int($this->get_id_prj()).'\'');
+			sql_do('UPDATE '.DB_PREF.'_projects SET valid_prj=\'1\' WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 			$this->set_valid_prj(1);
 		}
 	}
 	// FIXME: owner not implemented
 	function write()
 	{
-		sql_do('UPDATE projects SET name_prj=\''.str($this->get_name_prj()).'\',url_prj=\''.str($this->get_url_prj()).
+		sql_do('UPDATE '.DB_PREF.'_projects SET name_prj=\''.str($this->get_name_prj()).'\',url_prj=\''.str($this->get_url_prj()).
 			'\',desc_prj=\''.str($this->get_desc_prj()).'\',screenshot=\''.str($this->get_screenshot()).
 			'\',default_branch=\''.int($this->get_default_branch()).'\' WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 		$this->validate();
 	}
 	function add_admin($id_user, $owner = 0)
 	{
-		sql_do('INSERT INTO admins (id_user,id_prj,is_owner) VALUES (\''.int($id_user).'\',\''.int($this->get_id_prj()).'\',\''.int($owner).'\')');
+		sql_do('INSERT INTO '.DB_PREF.'_admins (id_user,id_prj,is_owner) VALUES (\''.int($id_user).'\',\''.int($this->get_id_prj()).'\',\''.int($owner).'\')');
 	}
 	function del_admin($id_user)
 	{
-		sql_do('DELETE FROM admins WHERE id_prj=\''.int($this->get_id_prj()).'\' AND id_user=\''.int($id_user).'\'');
+		sql_do('DELETE FROM '.DB_PREF.'_admins WHERE id_prj=\''.int($this->get_id_prj()).'\' AND id_user=\''.int($id_user).'\'');
 	}
 	function is_admin($id_user) {
-		$result = sql_do('SELECT id_user FROM admins WHERE id_prj=\''.int($this->get_id_prj()).'\' AND id_user=\''.int($id_user).'\'');
+		$result = sql_do('SELECT id_user FROM '.DB_PREF.'_admins WHERE id_prj=\''.int($this->get_id_prj()).'\' AND id_user=\''.int($id_user).'\'');
 		return ($result->numRows() == 1);
 	}
 	function list_authors()
 	{
-		return get_array_by_query('SELECT distinct(id_user) FROM authors JOIN releases USING (id_rel) JOIN branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
+		return get_array_by_query('SELECT distinct(id_user) FROM '.DB_PREF.'_authors JOIN '.DB_PREF.'_releases USING (id_rel) JOIN '.DB_PREF.'_branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 	}
 	function list_platforms()
 	{
-		return get_array_by_query('SELECT distinct(id_pf) FROM runson JOIN releases USING (id_rel) JOIN branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
+		return get_array_by_query('SELECT distinct(id_pf) FROM '.DB_PREF.'_runson JOIN '.DB_PREF.'_releases USING (id_rel) JOIN '.DB_PREF.'_branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 	}
 	function list_languages()
 	{
-		return get_array_by_query('SELECT distinct(id_lang) FROM written JOIN releases USING (id_rel) JOIN branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
+		return get_array_by_query('SELECT distinct(id_lang) FROM '.DB_PREF.'_written JOIN '.DB_PREF.'_releases USING (id_rel) JOIN '.DB_PREF.'_branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 	}
 	function list_categories()
 	{
-		return get_array_by_query('SELECT distinct(id_cat) FROM belongsto JOIN releases USING (id_rel) JOIN branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
+		return get_array_by_query('SELECT distinct(id_cat) FROM '.DB_PREF.'_belongsto JOIN '.DB_PREF.'_releases USING (id_rel) JOIN '.DB_PREF.'_branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\'');
 	}
 	function list_admins()
 	{
-		return (get_array_by_query('SELECT id_user,is_owner FROM admins WHERE id_prj=\''.int($this->get_id_prj()).'\''));
+		return (get_array_by_query('SELECT id_user,is_owner FROM '.DB_PREF.'_admins WHERE id_prj=\''.int($this->get_id_prj()).'\''));
 	}
 	function list_maintainers()
 	{
-		return (get_array_by_query('SELECT distinct(id_user) FROM branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\''));
+		return (get_array_by_query('SELECT distinct(id_user) FROM '.DB_PREF.'_branches USING(id_branch) WHERE id_prj=\''.int($this->get_id_prj()).'\''));
 	}
 	function list_branches($id_branch=0)
 	{
-		return (get_array_by_query('SELECT id_branch FROM branches WHERE id_prj=\''.int($this->get_id_prj()).'\' AND id_branch<>'.int($id_branch)));
+		return (get_array_by_query('SELECT id_branch FROM '.DB_PREF.'_branches WHERE id_prj=\''.int($this->get_id_prj()).'\' AND id_branch<>'.int($id_branch)));
 	}
 	function get_last_release()
 	{
-	  $result = sql_do('select id_rel from releases join branches using (id_branch) join projects using (id_prj) where id_branch=default_branch and id_prj=\''.int($this->get_id_prj()).'\' order by date_rel desc limit 1');
+	  $result = sql_do('SELECT id_rel FROM '.DB_PREF.'_releases JOIN '.DB_PREF.'_branches USING (id_branch) JOIN '.DB_PREF.'_projects USING (id_prj) WHERE '.DB_PREF.'_branches.id_branch='.DB_PREF.'_projects.default_branch AND '.DB_PREF.'_projects.id_prj=\''.int($this->get_id_prj()).'\' ORDER BY date_rel DESC LIMIT 1');
 	  if ($result->numRows() == 0)
 	    return (0);
 	  else {
@@ -193,7 +193,7 @@ class Project
 
 function project_get_by_id($id_prj)
 {
-	$result = sql_do('SELECT id_prj,name_prj,url_prj,desc_prj,screenshot,shortname,date_prj,valid_prj,default_branch FROM projects WHERE id_prj=\''.int($id_prj).'\'');
+	$result = sql_do('SELECT id_prj,name_prj,url_prj,desc_prj,screenshot,shortname,date_prj,valid_prj,default_branch FROM '.DB_PREF.'_projects WHERE id_prj=\''.int($id_prj).'\'');
 	if ($result->numRows() != 1) {
 		return (0);
 	}
@@ -217,25 +217,23 @@ function project_get_by_id($id_prj)
 // FIXME: owner not implemented
 function project_new($name_prj, $shortname, $description, $homepage)
 {
-	$result = sql_do('SELECT id_prj FROM projects WHERE shortname=\''.str($shortname).'\'');
+	$result = sql_do('SELECT id_prj FROM '.DB_PREF.'_projects WHERE shortname=\''.str($shortname).'\'');
 	if ($result->numRows()) {
 		append_error("Shortname '$shortname' already taken.");
 		return (0);
 	}
 
-	$id_prj = pick_id('projects_id_prj_seq');
-
 	try {
-		$result = sql_do('INSERT INTO projects (id_prj,name_prj,shortname,desc_prj,url_prj,date_prj,valid_prj) VALUES (\''.int($id_prj).'\',\''.str($name_prj).'\',\''.str($shortname).'\',\''.str($description).'\',\''.str($homepage).'\',\''.date('Y-m-d H:i:s').'\',0)');
+		$result = sql_do('INSERT INTO '.DB_PREF.'_projects (name_prj,shortname,desc_prj,url_prj,date_prj,valid_prj) VALUES (\''.str($name_prj).'\',\''.str($shortname).'\',\''.str($description).'\',\''.str($homepage).'\',\''.date('Y-m-d H:i:s').'\',0)');
 	} catch (DatabaseException $e) {
 		return (0);
 	}
-	return ($id_prj);
+	return (sql_last_id());
 }
 
 function project_get_all($valid = -1)
 {
-	return (get_array_by_query('SELECT id_prj FROM projects'.(($valid != -1) ? (' WHERE valid_user=\''.(bool)$valid.'\'') : '')));
+	return (get_array_by_query('SELECT id_prj FROM '.DB_PREF.'_projects'.(($valid != -1) ? (' WHERE valid_user=\''.(bool)$valid.'\'') : '')));
 }
 
 ?>

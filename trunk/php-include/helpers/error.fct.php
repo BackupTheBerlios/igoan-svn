@@ -52,11 +52,11 @@ function append_error($str) {
 function flush_errors_exit() {
 /*	flush_errors();
 	if ($_SESSION['id'] != 0) {
-		echo '<a href="/user/view_user.php">Back to user configuration</a> || ';
+		echo '<a href="'.REMOTE_PATH.'/user/view_user.php">Back to user configuration</a> || ';
 	}
-	echo '<a href="/">Back home</a>';
+	echo '<a href="'.REMOTE_PATH.'/">Back home</a>';
 	exit; */
-	require($_SERVER['DOCUMENT_ROOT'].'/error.php');
+	require(LOCAL_HTDOCS.'/error.php');
 	exit;
 }
 function append_error_exit($str) {

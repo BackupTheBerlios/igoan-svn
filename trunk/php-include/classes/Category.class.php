@@ -77,7 +77,7 @@ class Category
 	}
 	function delete()
 	{
-		sql_do('DELETE FROM categories WHERE id_cat=\''.int($this->get_id_cat()).'\'');
+		sql_do('DELETE FROM '.DB_PREF.'_categories WHERE id_cat=\''.int($this->get_id_cat()).'\'');
 	}
 #  function dumpXML()
 #  {
@@ -100,7 +100,7 @@ class Category
 
 function category_get_by_id($id)
 {
-	$result = sql_do('SELECT id_cat,name_cat,index,parent,valid_cat FROM categories WHERE id_cat=\''.int($id).'\'');
+	$result = sql_do('SELECT id_cat,name_cat,index,parent,valid_cat FROM '.DB_PREF.'_categories WHERE id_cat=\''.int($id).'\'');
 
 	if ($result->numRows() != 1) {
 		return (0);
@@ -121,7 +121,7 @@ function category_new($index, $nom)
 	# FIXME: increase the actual limit of 10 children by category
 
 	/* recuperation des index existants et correspondants */
-	$result = sql_do('SELECT index FROM categories WHERE index LIKE \''.str($index).'_\' ORDER BY index');
+	$result = sql_do('SELECT index FROM '.DB_PREF.'_categories WHERE index LIKE \''.str($index).'_\' ORDER BY index');
 	for ($i = 0; $i < 10; $i++) {
 		$row = $result->fetchRow();
 		if ($row[0] != ($index . $i)) break;
@@ -129,21 +129,20 @@ function category_new($index, $nom)
 
 	if ($i == 10) return (-1);
 
-	$id_cat = pick_id('categories_id_cat_seq');
 	try {
-		sql_do('INSERT INTO categories (id_cat,index,name_cat) VALUES (\''.int($id_cat).'\',\''.str($index).int($i).'\',\''.str($nom).'\')');
+		sql_do('INSERT INTO '.DB_PREF.'_categories (index,name_cat) VALUES (\''.str($index).int($i).'\',\''.str($nom).'\')');
 	} catch (DatabaseException $e) {
 		return 0;
 	}
-	return $id_cat;
+	return sql_last_id();
 }
 
 function category_list($level = '') 
 {
-	return get_array_by_query('SELECT id_cat,name_cat,index,parent FROM categories WHERE index LIKE \''.str($level).'%\' ORDER BY name');
+	return get_array_by_query('SELECT id_cat,name_cat,index,parent FROM '.DB_PREF.'_categories WHERE index LIKE \''.str($level).'%\' ORDER BY name');
 }
 
 function category_list_all()
 {
-	return get_array_by_query('SELECT id_cat,name_cat,index,parent FROM categories ORDER BY index');
+	return get_array_by_query('SELECT id_cat,name_cat,index,parent FROM '.DB_PREF.'_categories ORDER BY index');
 }

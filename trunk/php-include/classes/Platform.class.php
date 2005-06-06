@@ -58,7 +58,7 @@ class Platform
 	}
 	function delete()
 	{
-		sql_do('DELETE FROM platforms WHERE id_pf=\''.int($this->get_id_pf()).'\'');
+		sql_do('DELETE FROM '.DB_PREF.'_platforms WHERE id_pf=\''.int($this->get_id_pf()).'\'');
 	}
 #  function dumpXML()
 #  {
@@ -81,7 +81,7 @@ class Platform
 
 function platform_get_by_id($id)
 {
-	$result = sql_do('SELECT id_pf,name_pf,valid_pf FROM platforms WHERE id_pf=\''.int($id).'\'');
+	$result = sql_do('SELECT id_pf,name_pf,valid_pf FROM '.DB_PREF.'_platforms WHERE id_pf=\''.int($id).'\'');
 
 	if ($result->numRows() != 1) {
 		return (0);
@@ -97,16 +97,15 @@ function platform_get_by_id($id)
 
 function platform_new($nom)
 {
-	$id_pf = pick_id('platforms_id_pf_seq');
 	try {
-		$result = sql_do('INSERT INTO platforms (id_pf,name_pf) VALUES ('.int($id_pf).',\''.int($nom).'\')');
+		$result = sql_do('INSERT INTO '.DB_PREF.'_platforms (name_pf) VALUES (\''.str($nom).'\')');
 	} catch (DatabaseException $e) {
 		return 0;
 	}
-	return $id_pf;
+	return sql_last_id();
 }
 
 function platform_list()
 {
-	return get_array_by_query("SELECT id_pf,name_pf FROM platforms ORDER BY name_pf");
+	return get_array_by_query('SELECT id_pf,name_pf FROM '.DB_PREF.'_platforms ORDER BY name_pf');
 }

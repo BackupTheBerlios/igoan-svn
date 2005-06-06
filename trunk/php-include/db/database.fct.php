@@ -40,6 +40,8 @@ function get_array_by_query($sql) {
 
 function sql_do($sql) {
 	global $igoandb;
+	global $queries;
+	$queries.= "$sql<br/>";
 	try {
 		return ($igoandb->query($sql));
 	} catch (DatabaseException $e) {
@@ -47,6 +49,7 @@ function sql_do($sql) {
 	}
 }
 
+// only for postgresql
 function pick_id($seq) {
 	// FIXME: check $seq
 	$result = sql_do('SELECT nextval(\''.$seq.'\')');
@@ -54,6 +57,9 @@ function pick_id($seq) {
 		append_error('Unable to fetch a fresh ID.');
 		return (0);
 	}
-	$row = $result->fetchRow();
-	return ($row[0]);
+	return ($result->fetchOne());
+}
+// only for mysql
+function sql_last_id() {
+	return mysql_insert_id();
 }
