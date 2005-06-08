@@ -29,10 +29,27 @@
 		{
 			global $smarty;
 			
+			/*
 			$projets = new ProjectList(); # la on dit que ca sqlise pour chopper les projets, et que ca remplit un tableau dans cet objet
 			$array = $projets->getList(); # la ca retourne un tableau
 			$smarty->assign_by_ref('tab', $array);
-			$this->_template = $smarty->fetch('home.tpl');
+			*/
+
+			// on assigne des trucs à la main pour développer le template smarty
+			$logged = 'no';
+			$smarty->assign_by_ref('logged', $logged);
+			$view_user_name = 'Camille Huot';
+			$smarty->assign_by_ref('view_user_name', $view_user_name);
+			$view_user_id =  '1';
+			$smarty->assign_by_ref('view_user_id', $view_user_id);
+			$view_user_date = '2005-03-12 23:43:29';
+			$smarty->assign_by_ref('view_user_date', $view_user_date);
+			$view_user_desc = '';
+			$smarty->assign_by_ref('view_user_desc', $view_user_desc);
+			$view_user_projects = array(array('Igoan the Free directory', 1, '-', '-'));
+			$smarty->assign_by_ref('view_user_projects', $view_user_projects);
+
+			$this->_template = $smarty->fetch('view_user.tpl');
 		}
 	}
 ?>

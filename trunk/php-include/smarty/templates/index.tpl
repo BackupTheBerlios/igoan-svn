@@ -7,13 +7,15 @@
 </head>
 <body>
 	<h1> Igoan </h1>
+
+	<!--
 	<div>
 		<ul>
 			<li> menu 1 </li>
 			<li> menu 2 </li>
-		</ul>	
+		</ul>
 		{* Maybe someday? <ul> {foreach from=$rubrique->getSubmenu() item=....} *}
-	</div>
+	</div> -->
 	<div id="body" class="{$rubrique->getBodyClass()}">
 		{$rubrique->getBody()}
 	</div>

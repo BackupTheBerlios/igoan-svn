@@ -23,16 +23,16 @@
 <?php
 	# we'll just display the homepage when PATH_INFO is not set
 	if (!empty($_SERVER['PATH_INFO']))
-		$argv = explode('/', substr($_SERVER['PATH_INFO'], 1));		
+		$argv = explode('/', substr($_SERVER['PATH_INFO'], 1));
 	else
-		$argv = array(0 => 'home');	
+		$argv = array(0 => 'home');
 	
 	switch ($argv[0])
 	{
 		case 'home':
 		default:
 			require_once IGOAN_SECTION_PATH . 'home.class.php';
-			$section = new HomeSection($argv);
+			$rubrique = new HomeSection($argv);
 			break;
 	}
 	
