@@ -4,7 +4,7 @@
 # Please see the file CREDITS supplied with Igoan to see the full list
 # of copyright holders.
 #
-# $Id: prepend.php,v 1.1.1.1 2004/12/30 21:48:40 cam Exp $
+# $Id$
 #
 # This file is part of the Igoan project.
 #
@@ -33,8 +33,8 @@ if (!empty($_GET)) foreach ($_GET as $key => $value) {
 }
 
 // config PHP local
-define('LOCAL_HTDOCS', '/home/cam/Dev/Igoan/igoan/branches/testmysql/htdocs');
-define('REMOTE_PATH', '/igoan');
+define('LOCAL_HTDOCS', '/home/cam/public_html/igoan/www/branches/testmysql/htdocs');
+define('REMOTE_PATH', '');
 require_once 'db.php';
 ini_set('session.use_cookies', 1);
 #if (ereg("igoan.org", $_SERVER['SERVER_NAME'])) {

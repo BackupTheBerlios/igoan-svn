@@ -1,6 +1,6 @@
 
 # fill in the correct php-include path
-php_value include_path '/home/cam/public_html/igoan/www/igoan/php-include/
+php_value include_path '/home/cam/public_html/igoan/www/branches/vieuxtruc/php-include/
 
 php_value auto_prepend_file 'prepend.php'
 ErrorDocument 404 /error.php?code=404
