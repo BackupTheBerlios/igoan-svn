@@ -36,6 +36,8 @@
 			*/
 
 			// on assigne des trucs à la main pour développer le template smarty
+			$page_title = 'View User';
+			$smarty->assign_by_ref('page_title', $page_title);
 			$logged = 'no';
 			$smarty->assign_by_ref('logged', $logged);
 			$view_user_name = 'Camille Huot';
@@ -49,7 +51,7 @@
 			$view_user_projects = array(array('Igoan the Free directory', 1, '-', '-'));
 			$smarty->assign_by_ref('view_user_projects', $view_user_projects);
 
-			$this->_template = $smarty->fetch('view_user.tpl');
+			$this->_template = 'view_user.tpl';
 		}
 	}
 ?>
